@@ -1,13 +1,71 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Temel stil ayarları */
+.flight-search-form {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.form-group {
+  margin-bottom: 15px;
 }
+
+.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.checkbox-field {
+  margin-left: 5px;
+}
+
+.button-field {
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.search-results {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.flight-result {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+/* İlave stil ayarları */
+.select-field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Daha fazla stil ayarları eklemek için bu alanı genişletebilirsiniz */
