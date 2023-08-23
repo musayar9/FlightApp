@@ -7,8 +7,8 @@
       "arrivalAirport": "ESB",
       "departureCity": "Istanbul",
       "arrivalCity": "Ankara",
-      "departureTime": "2023-08-24T10:00:00",
-      "arrivalTime": "2023-08-24T11:30:00",
+      "departureTime": "2023-08-23",
+      "arrivalTime": "2023-08-24",
       "price": 150
     },
     {
@@ -18,8 +18,8 @@
       "arrivalAirport": "IZM",
       "departureCity": "Istanbul",
       "arrivalCity": "Izmir",
-      "departureTime": "2023-08-24T12:00:00",
-      "arrivalTime": "2023-08-24T13:30:00",
+      "departureTime": "2023-08-27",
+      "arrivalTime": "2023-08-28",
       "price": 200
     },
 
@@ -30,8 +30,8 @@
       "arrivalAirport": "IST",
       "departureCity": "Ankara",
       "arrivalCity": "Istanbul",
-      "departureTime": "2023-08-24T12:00:00",
-      "arrivalTime": "2023-08-24T13:30:00",
+      "departureTime": "2023-08-23",
+      "arrivalTime": "2023-08-24",
       "price": 500
     },
     {
@@ -41,8 +41,8 @@
       "arrivalAirport": "AYT",
       "departureCity": "Istanbul",
       "arrivalCity": "Antalya",
-      "departureTime": "2023-08-24T12:00:00",
-      "arrivalTime": "2023-08-24T13:30:00",
+      "departureTime": "2023-08-23",
+      "arrivalTime": "2023-08-25",
       "price": 600
     },
     {
@@ -52,8 +52,8 @@
       "arrivalAirport": "ESB",
       "departureCity": "Sivas",
       "arrivalCity": "Ankara",
-      "departureTime": "2023-08-24T12:00:00",
-      "arrivalTime": "2023-08-24T13:30:00",
+      "departureTime": "2023-08-25",
+      "arrivalTime": "2023-08-26",
       "price": 70
     }
   ]
