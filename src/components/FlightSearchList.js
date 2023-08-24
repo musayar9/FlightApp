@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-function FlightSearchList({flightStatus, searchResult}) {
+function FlightSearchList({ flightStatus, searchResult }) {
   const fortmatDate = (time) => {
     const newDate = time.split("-");
     console.log("newDate", newDate[2]);
@@ -15,16 +15,21 @@ function FlightSearchList({flightStatus, searchResult}) {
         {flightStatus === "succeded" && searchResult.length > 0 ? (
           <>
             {searchResult.map((flight) => (
-              <li key={flight.id} className="flex items-center justify-center border border-gray-300 rounded-lg p-4 m-2">
-              
-              <div>
-                    <p></p>
-                
-              </div>
-                <p>Kalkılan havalimanı: {flight.departureAirport}</p>
-                <p>inilen havalimanı: {flight.arrivalAirport}</p>
-                <p>Kalkış: {flight.departureCity}</p>
-                <p>Varış: {flight.arrivalCity}</p>
+              <li
+                key={flight.id}
+                className="flex flex-col items-center justify-center border border-gray-300 rounded-lg p-4 m-2"
+              >
+                <p>Airline :{flight.airline}</p>
+
+                <p>
+                  Departure {flight.departureCity} - (
+                  {flight.departureAirportCode})
+                </p>
+                <p>
+                  Arrival: {flight.arrivalCity}-({flight.arrivalAirportCode})
+                </p>
+                <p>DepartureHoure: {flight.departureHour}</p>
+                <p>Varış: {flight.arrivalHour}</p>
                 <p>Pricee: {flight.price}</p>
                 <p>kALKIŞ ZAMANO: {fortmatDate(flight.departureTime)}</p>
                 <p>Varış ZAMANI: {fortmatDate(flight.arrivalTime)}</p>
@@ -41,4 +46,4 @@ function FlightSearchList({flightStatus, searchResult}) {
   );
 }
 
-export default FlightSearchList
+export default FlightSearchList;

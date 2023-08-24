@@ -48,7 +48,7 @@ function FlightSearchForm() {
         flight.departureCity
           .toLocaleLowerCase("TR")
           .includes(searchData.departureAirport.toLocaleLowerCase("TR"));
-
+        
       const arrivalMatch =
         flight.arrivalAirportCode
           .toLocaleLowerCase("TR")
@@ -81,9 +81,8 @@ function FlightSearchForm() {
       arrivalDate: e.target.checked ? "" : prevData.arrivalDate,
     }));
   };
-  const handleSearch = (e) => {
-  e.preventDefault()
-  
+  const handleSearch = () => {
+
 if (
   searchData.departureAirport === "" ||
   searchData.arrivalAirport === "" ||
@@ -134,14 +133,10 @@ if (
 
   return (
     <div className="mx-auto flex flex-col items-center content-center mt-10 ">
-
-
-      <form
-        onSubmit={handleSearch}
+      <div
         className="border border-gray-300 w-[800px] p-10"
-      >
-      
         
+      >
         <div class="grid md:grid-cols-2 md:gap-6">
           <div class="relative z-0 w-full mb-6 group">
             <input
@@ -150,7 +145,7 @@ if (
               id="departureAirport"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
-              required
+
               value={searchData.departureAirport}
               onChange={handleChange}
             />
@@ -160,6 +155,9 @@ if (
             >
               Departure Airport
             </label>
+            {showError.departureAirport && (
+              <p className="error-message">Kalkış havaalanı boş bırakılamaz.</p>
+            )}
           </div>
           <div class="relative z-0 w-full mb-6 group">
             <input
@@ -239,14 +237,14 @@ if (
         </div>
 
         <button
-          type="onSubmit"
+       onClick={handleSearch}
           class="w-full relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
         >
           <span class="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
             Search Flight
           </span>
         </button>
-      </form>
+      </div>
 
       {/* <FlightFilter
         searchResult={searchResult}
