@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFlights } from "../redux/flightSlice";
 import FlightSearchList from "./FlightSearchList";
 import FlightFilter from "./FlightFilter";
+import './flight.css'
 function FlightSearchForm() {
   const [searchData, setSearchData] = useState({
     departureAirportCode: "",
@@ -184,12 +185,12 @@ function FlightSearchForm() {
     <div className="mx-auto flex flex-col items-center content-center mt-10 ">
       <div className="border border-gray-300 w-[800px] p-10">
         <div class="grid md:grid-cols-2 md:gap-6">
-          <div class="relative z-0 w-full mb-6 group">
+          <div class="relative z-20 w-full mb-6 group">
             <input
               type="text"
               name="departureAirport"
               id="departureAirport"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               value={searchData.departureAirport}
               onChange={handleChange}
@@ -198,7 +199,7 @@ function FlightSearchForm() {
             {searchData.departureAirport && (
               <>
                 {isDepartureFilter && (
-                  <div className="airport-list">
+                  <div className="w-full border search border-gray-300  font-semibold h-24 overflow-x-auto rounded  bg-gray-50  absolute">
                     {getUniqueAirports()
                       .filter((item) =>
                         item.departureAirportCode
@@ -211,7 +212,7 @@ function FlightSearchForm() {
                       )
                       .map((filteredItem) => (
                         <p
-                          className="cursor-pointer"
+                          className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-0.5"
                           key={filteredItem.id}
                           onClick={() =>
                             handleAirportClick(
@@ -251,7 +252,7 @@ function FlightSearchForm() {
             {searchData.arrivalAirport && (
               <>
                 {isArrivalFilter && (
-                  <div className="w-full border border-gray-300 p-2 font-bold h-24  overflow-x-auto rounded text-gray-50 bg-gray-400  absolute">
+                  <div className="w-full border search border-gray-300  font-semibold h-24 overflow-x-auto rounded  bg-gray-50  absolute">
                     {getUniqueArrival()
                       .filter((item) =>
                         item.arrivalAirportCode
@@ -264,7 +265,7 @@ function FlightSearchForm() {
                       )
                       .map((filteredItem) => (
                         <p
-                          className="cursor-pointer"
+                          className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-0.5"
                           key={filteredItem.id}
                           onClick={() =>
                             handleArrivalAirport(

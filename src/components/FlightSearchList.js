@@ -1,5 +1,5 @@
 import React from "react";
-
+import { MdOutlineAirlines } from "react-icons/md";
 function FlightSearchList({ flightStatus, searchResult }) {
   const fortmatDate = (time) => {
     const newDate = time.split("-");
@@ -17,17 +17,23 @@ function FlightSearchList({ flightStatus, searchResult }) {
             {searchResult.map((flight) => (
               <li
                 key={flight.id}
-                className="flex flex-col items-center justify-center border border-gray-300 rounded-lg p-4 m-2"
+                className="flex  items-center justify-center border border-gray-300 rounded-lg p-4 m-2"
               >
-                <p>Airline :{flight.airline}</p>
+                <div className="flex flex-col items-start">
+                  <div className="flex items-center ">
+                    <MdOutlineAirlines size={24} className="text-blue-600" />
+                    <h2 className="text-bold ">{flight.airline}</h2>
+                  </div>
 
-                <p>
-                  Departure {flight.departureCity} - (
-                  {flight.departureAirportCode})
-                </p>
-                <p>
-                  Arrival: {flight.arrivalCity}-({flight.arrivalAirportCode})
-                </p>
+                  <p>
+                    Departure {flight.departureCity} - (
+                    {flight.departureAirportCode})
+                  </p>
+                  <p>
+                    Arrival: {flight.arrivalCity}-({flight.arrivalAirportCode})
+                  </p>
+                </div>
+
                 <p>DepartureHoure: {flight.departureHour}</p>
                 <p>Varış: {flight.arrivalHour}</p>
                 <p>
