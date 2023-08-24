@@ -30,7 +30,13 @@ function FlightSearchList({ flightStatus, searchResult }) {
                 </p>
                 <p>DepartureHoure: {flight.departureHour}</p>
                 <p>Varış: {flight.arrivalHour}</p>
-                <p>Pricee: {flight.price}</p>
+                <p>
+                  Pricee:{" "}
+                  {new Intl.NumberFormat("tr-TR", {
+                    style: "currency",
+                    currency: "TRY",
+                  }).format(flight.price)}
+                </p>
                 <p>kALKIŞ ZAMANO: {fortmatDate(flight.departureTime)}</p>
                 <p>Varış ZAMANI: {fortmatDate(flight.arrivalTime)}</p>
                 {/* <p>Pirce: {flight.price}</p> */}

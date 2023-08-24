@@ -79,9 +79,9 @@
     {
       "id": 6,
       "airline": "FlightCo",
-      "departureAirportCode": "IST",
+      "departureAirportCode": "SAW",
       "arrivalAirportCode": "ADA",
-      "departureAirport": "Istanbul Havalimanı",
+      "departureAirport": "Sabiha Gökçen Havalimanı",
       "arrivalAirport": "Sakirpasa Havalimanı",
       "departureCity": "Istanbul",
       "arrivalCity": "Adana",
@@ -126,9 +126,9 @@
     {
       "id": 9,
       "airline": "Turkish Airlines",
-      "departureAirportCode": "IST",
+      "departureAirportCode": "SAW",
       "arrivalAirportCode": "AYT",
-      "departureAirport": "Istanbul Havalimanı",
+      "departureAirport": "Sabiha Gökçen Havalimanı",
       "arrivalAirport": "Antalya Havalimanı",
       "departureCity": "Istanbul",
       "arrivalCity": "Antalya",
