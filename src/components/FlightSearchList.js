@@ -11,11 +11,16 @@ function FlightSearchList({flightStatus, searchResult}) {
   };
   return (
     <div>
-      <div className="search-results">
+      <ul className="p-4 m-4">
         {flightStatus === "succeded" && searchResult.length > 0 ? (
           <>
             {searchResult.map((flight) => (
-              <div key={flight.id} className="flight-result">
+              <li key={flight.id} className="flex items-center justify-center border border-gray-300 rounded-lg p-4 m-2">
+              
+              <div>
+                    <p></p>
+                
+              </div>
                 <p>Kalkılan havalimanı: {flight.departureAirport}</p>
                 <p>inilen havalimanı: {flight.arrivalAirport}</p>
                 <p>Kalkış: {flight.departureCity}</p>
@@ -25,13 +30,13 @@ function FlightSearchList({flightStatus, searchResult}) {
                 <p>Varış ZAMANI: {fortmatDate(flight.arrivalTime)}</p>
                 {/* <p>Pirce: {flight.price}</p> */}
                 {/* Diğer bilgiler */}
-              </div>
+              </li>
             ))}
           </>
         ) : (
           <p>Uçuş Bulunamadı</p>
         )}
-      </div>
+      </ul>
     </div>
   );
 }
