@@ -29,6 +29,8 @@ function FlightSearchForm() {
     arrivalAirport: false,
     departureDate: false,
   });
+  
+
   useEffect(() => {
     if (flightStatus === "idle") {
       dispatch(fetchFlights());
@@ -37,8 +39,10 @@ function FlightSearchForm() {
     }
   }, [setSearchResult, dispatch, flightStatus, flight]);
 
+
   useEffect(() => {
     // Uygun uçuşları filtreleme
+
     const filteredFlights = flight.filter((flight) => {
       const departureMatch =
         flight.departureAirportCode
@@ -60,7 +64,10 @@ function FlightSearchForm() {
     });
 
     setSearchResult(filteredFlights);
+    setShowFlight(false);
   }, [searchData, flight]);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -181,6 +188,9 @@ function FlightSearchForm() {
 
     return Array.from(uniqueAirportsMap.values());
   };
+  
+
+ 
   return (
     <div className="mx-auto flex flex-col items-center content-center mt-10 ">
       <div className="border border-gray-300 w-[800px] p-10">
@@ -363,10 +373,16 @@ function FlightSearchForm() {
         setSearchResult={setSearchResult}
       /> */}
 
+
+
       <FlightSearchList
         flightStatus={flightStatus}
+        
+        showFlight={showFlight}
         searchResult={searchResult}
       />
+      
+
     </div>
   );
 }
