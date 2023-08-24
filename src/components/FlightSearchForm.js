@@ -12,10 +12,17 @@ function FlightSearchForm() {
     arrivalDate: "",
     oneWay: false,
   });
+  
+  
 
   const dispatch = useDispatch();
   const { flight, flightStatus, error } = useSelector((state) => state.flights);
   const [searchResult, setSearchResult] = useState();
+  const [showError, setShowError] = useState({
+    departureAirport: false,
+    arrivalAirport: false,
+    departureDate: false,
+  });
   useEffect(() => {
     if (flightStatus === "idle") {
       dispatch(fetchFlights());
@@ -26,43 +33,7 @@ function FlightSearchForm() {
 
   console.log("searchResult", searchResult);
 
-  // const handleDepartureAirportChange = (e) => {
-  //   const filteredResults = flight.filter(
-  //     (flight) =>
-  //       flight.departureCity
-  //         .toString()
-  //         .toLocaleLowerCase("TR")
-  //         .includes(e.target.value.toString().toLocaleLowerCase("TR")) ||
-  //       flight.departureCity
-  //         .toString()
-  //         .toLocaleLowerCase("TR")
-  //         .includes(e.target.value.toString().toLocaleLowerCase("TR"))
-  //   );
-  //   setSearchData((prevData) => ({
-  //     ...prevData,
-  //     departureAirport: e.target.value,
-  //   }));
-  //   setSearchResult(filteredResults);
-  // };
 
-  // const handleArrivalAirportChange = (e) => {
-  //   const filteredResults = flight.filter(
-  //     (flight) =>
-  //       flight.arrivalCity
-  //         .toString()
-  //         .toLocaleLowerCase("TR")
-  //         .includes(e.target.value.toString().toLocaleLowerCase("TR")) ||
-  //       flight.arrivalCity
-  //         .toString()
-  //         .toLocaleLowerCase("TR")
-  //         .includes(e.target.value.toString().toLocaleLowerCase("TR"))
-  //   );
-  //   setSearchData((prevData) => ({
-  //     ...prevData,
-  //     arrivalAirport: e.target.value,
-  //   }));
-  //   setSearchResult(filteredResults);
-  // };
   useEffect(() => {
     // Uygun uçuşları filtreleme
     const filteredFlights = flight.filter((flight) => {
@@ -82,13 +53,14 @@ function FlightSearchForm() {
           .toLocaleLowerCase("TR")
           .includes(searchData.arrivalAirport.toLocaleLowerCase("TR"));
 
+
+      
       return departureMatch && arrivalMatch;
     });
 
+  
     setSearchResult(filteredFlights);
   }, [searchData, flight]);
-
- 
 
   console.log("flightts", flight);
   const handleChange = (e) => {
@@ -107,7 +79,57 @@ function FlightSearchForm() {
     }));
   };
   const handleSearch = () => {
-    setSearchResult(searchResult);
+  
+if (
+  searchData.departureAirport === "" ||
+  searchData.arrivalAirport === "" ||
+  searchData.departureDate === ""
+) {
+  setShowError({
+    departureAirport: searchData.departureAirport === "",
+    arrivalAirport: searchData.arrivalAirport === "",
+    departureDate: searchData.departureDate === "",
+  });
+  return;
+} else {
+  setShowError({
+    departureAirport: false,
+    arrivalAirport: false,
+    departureDate: false,
+  });
+}
+
+  
+  
+  
+    const dateFilter = searchResult.filter((flight)=>{
+
+    
+    const searchDateFilter =  new Date(searchData.departureDate)
+    const searchResultDate = new Date(flight.departureTime)
+    
+    
+    const searchArrivalDate = new Date(searchData.arrivalDate)
+    const searchResultArrivalDate = new Date(flight.arrivalTime)
+    
+    const departureFilterDate = compareAsc(
+      searchResultDate,  searchDateFilter
+    ) === 0
+    
+     const arrivalFilterDate =
+       compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
+    if(!searchData.oneWay){
+    return departureFilterDate  &&  arrivalFilterDate   
+    }else{
+    return  arrivalFilterDate
+    }
+  
+    
+    // return departureFilterDate && arrivalFilterDate
+    })
+  
+  
+    setSearchResult(dateFilter);
   };
 
   //searchResult sorted by price
@@ -119,26 +141,24 @@ function FlightSearchForm() {
   const fortmatDate = (time) => {
     const newDate = time.split("-");
     console.log("newDate", newDate[2]);
-    
+
     const newDateValue = newDate.reverse().join("/");
 
     return newDateValue;
   };
   console.log("searchData", searchData);
 
-const handleSortByDepartureTime = () => {
-  const sortedFlights = [...searchResult].sort((a, b) =>
-    compareAsc(new Date(a.departureTime), new Date(b.departureTime))
-  );
-  setSearchResult(sortedFlights);
-};
+  const handleSortByDepartureTime = () => {
+    const sortedFlights = [...searchResult].sort((a, b) =>
+      compareAsc(new Date(a.departureTime), new Date(b.departureTime))
+    );
+    setSearchResult(sortedFlights);
+  };
 
-const handleSortPirce = () => {
-  const sortPrice = [...searchResult].sort((a, b) =>
-    (b.price-a.price)
-  );
-  setSearchResult(sortPrice);
-};
+  const handleSortPirce = () => {
+    const sortPrice = [...searchResult].sort((a, b) => b.price - a.price);
+    setSearchResult(sortPrice);
+  };
   return (
     <div className="flight-search-form">
       <h2>Uçuş Arama</h2>
@@ -150,6 +170,9 @@ const handleSortPirce = () => {
           value={searchData.departureAirport}
           onChange={handleChange}
         />
+        {showError.departureAirport && (
+          <p className="error-message">Kalkış havaalanı boş bırakılamaz.</p>
+        )}
       </div>
       <div className="form-group">
         <label>Varış Havaalanı</label>
@@ -159,6 +182,9 @@ const handleSortPirce = () => {
           value={searchData.arrivalAirport}
           onChange={handleChange}
         />
+        {showError.arrivalAirport && (
+          <p className="error-message">Kalkış havaalanı boş bırakılamaz.</p>
+        )}
       </div>
       <div className="form-group">
         <label>Kalkış Tarihi</label>
@@ -198,14 +224,12 @@ const handleSortPirce = () => {
       </div>
 
       <div className="form-group">
-        <button onClick={handleSortPirce}>
-          fiyata göre sırala
-        </button>
+        <button onClick={handleSortPirce}>fiyata göre sırala</button>
       </div>
       <div>
         <div className="search-results">
           <></>
-
+       
           {flightStatus === "succeded" && searchResult.length > 0 ? (
             <>
               {searchResult.map((flight) => (

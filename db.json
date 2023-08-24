@@ -10,7 +10,6 @@
       "departureTime": "2023-08-23",
       "arrivalTime": "2023-08-24",
       "price": 150
-     
     },
     {
       "id": 2,
@@ -43,7 +42,7 @@
       "departureCity": "Istanbul",
       "arrivalCity": "Antalya",
       "departureTime": "2023-08-23",
-      "arrivalTime": "2023-08-25",
+      "arrivalTime": "2023-08-24",
       "price": 600
     },
     {
@@ -56,6 +55,52 @@
       "departureTime": "2023-08-25",
       "arrivalTime": "2023-08-26",
       "price": 70
+    },
+    {
+      "id": 6,
+      "airline": "FlightCo",
+      "departureAirport": "IST",
+      "arrivalAirport": "ADA",
+      "departureCity": "Istanbul",
+      "arrivalCity": "Adana",
+      "departureTime": "2023-08-27",
+      "arrivalTime": "2023-08-27",
+      "price": 300
+    },
+
+    {
+      "id": 7,
+      "airline": "Turkish Airlines",
+      "departureAirport": "AYT",
+      "arrivalAirport": "ESB",
+      "departureCity": "Antalya",
+      "arrivalCity": "Ankara",
+      "departureTime": "2023-08-27",
+      "arrivalTime": "2023-08-28",
+      "price": 250
+    },
+
+    {
+      "id": 8,
+      "airline": "FlightCo",
+      "departureAirport": "CKZ",
+      "arrivalAirport": "ERZ",
+      "departureCity": "Çannakale",
+      "arrivalCity": "Erzurum",
+      "departureTime": "2023-08-25",
+      "arrivalTime": "2023-08-26",
+      "price": 900
+    },
+    {
+      "id": 9,
+      "airline": "Turkish Airlines",
+      "departureAirport": "IST",
+      "arrivalAirport": "AYT",
+      "departureCity": "Istanbul",
+      "arrivalCity": "Antalya",
+      "departureTime": "2023-08-24",
+      "arrivalTime": "2023-08-24",
+      "price": 800
     }
   ]
 }
