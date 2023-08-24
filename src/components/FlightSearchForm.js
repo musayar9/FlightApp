@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { compareAsc } from "date-fns";
+import { compareAsc, isToday, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFlights } from "../redux/flightSlice";
 import FlightSearchList from "./FlightSearchList";
@@ -63,6 +63,16 @@ function FlightSearchForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    if(name === "departureTime" && name==="arrivalTime" && isToday(new Date(value))){
+    setSearchData((prevDate)=>({
+    
+    ...prevDate,
+    departureDate:"",
+    arrivalDate:""
+    }))
+    return
+    }
     setSearchData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -290,8 +300,7 @@ function FlightSearchForm() {
               value={searchData.departureDate}
               onChange={handleChange}
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300   focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
+              min={isToday(new Date()) ? format(new Date(), "yyyy-MM-dd") : ""}
             />
             <label
               htmlFor="depreatureDate"
@@ -308,6 +317,7 @@ function FlightSearchForm() {
               className="flex py-2.5 z-10 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer 
               disabled:text-gray-300"
               value={searchData.arrivalDate}
+              min={isToday(new Date()) ? format(new Date(), "yyyy-MM-dd") : ""}
               onChange={handleChange}
               disabled={searchData.oneWay}
             />
