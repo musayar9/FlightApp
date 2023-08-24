@@ -1,69 +1,66 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { format, compareAsc } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFlights, setFlights } from "../redux/flightSlice";
 function FlightSearchForm() {
   const [searchData, setSearchData] = useState({
     departureAirport: "",
     arrivalAirport: "",
-    departureCity:"",
-    arrivalCity:"",
+    departureCity: "",
+    arrivalCity: "",
     departureDate: "",
     arrivalDate: "",
     oneWay: false,
   });
+  
+  
 
- 
   const dispatch = useDispatch();
   const { flight, flightStatus, error } = useSelector((state) => state.flights);
- const [searchResult, setSearchResult] = useState();
+  const [searchResult, setSearchResult] = useState();
+  const [showError, setShowError] = useState({
+    departureAirport: false,
+    arrivalAirport: false,
+    departureDate: false,
+  });
   useEffect(() => {
     if (flightStatus === "idle") {
       dispatch(fetchFlights());
-      
-      setSearchResult(flight)
+
+      setSearchResult(flight);
     }
   }, [setFlights, dispatch]);
 
   console.log("searchResult", searchResult);
 
-  const handleDepartureAirportChange = (e) => {
-    const filteredResults = flight.filter(
-      (flight) =>
+
+  useEffect(() => {
+    // Uygun uçuşları filtreleme
+    const filteredFlights = flight.filter((flight) => {
+      const departureMatch =
         flight.departureAirport
-          .toString()
           .toLocaleLowerCase("TR")
-          .includes(e.target.value.toString().toLocaleLowerCase("TR")) ||
-        flight.departureAirport
-          .toString()
+          .includes(searchData.departureAirport.toLocaleLowerCase("TR")) ||
+        flight.departureCity
           .toLocaleLowerCase("TR")
-          .includes(e.target.value.toString().toLocaleLowerCase("TR"))
-    );
-    setSearchData((prevData) => ({
-      ...prevData,
-      departureAirport: e.target.value,
-    }));
-    setSearchResult(filteredResults);
-  };
+          .includes(searchData.departureAirport.toLocaleLowerCase("TR"));
+
+      const arrivalMatch =
+        flight.arrivalAirport
+          .toLocaleLowerCase("TR")
+          .includes(searchData.arrivalAirport.toLocaleLowerCase("TR")) ||
+        flight.arrivalCity
+          .toLocaleLowerCase("TR")
+          .includes(searchData.arrivalAirport.toLocaleLowerCase("TR"));
+
+
+      
+      return departureMatch && arrivalMatch;
+    });
+
   
-  const handleArrivalAirportChange = (e) => {
-    const filteredResults = flight.filter(
-      (flight) =>
-        flight.arrivalAirport
-          .toString()
-          .toLocaleLowerCase("TR")
-          .includes(e.target.value.toString().toLocaleLowerCase("TR")) ||
-        flight.arrivalAirport
-          .toString()
-          .toLocaleLowerCase("TR")
-          .includes(e.target.value.toString().toLocaleLowerCase("TR"))
-    );
-    setSearchData((prevData) => ({
-      ...prevData,
-      arrivalAirport: e.target.value,
-    }));
-    setSearchResult(filteredResults);
-  };
+    setSearchResult(filteredFlights);
+  }, [searchData, flight]);
 
   console.log("flightts", flight);
   const handleChange = (e) => {
@@ -81,46 +78,113 @@ function FlightSearchForm() {
       arrivalDate: e.target.checked ? "" : prevData.arrivalDate,
     }));
   };
-    const handleSearch = () => {
-      setSearchResult(searchResult);
-    };
+  const handleSearch = () => {
+  
+if (
+  searchData.departureAirport === "" ||
+  searchData.arrivalAirport === "" ||
+  searchData.departureDate === ""
+) {
+  setShowError({
+    departureAirport: searchData.departureAirport === "",
+    arrivalAirport: searchData.arrivalAirport === "",
+    departureDate: searchData.departureDate === "",
+  });
+  return;
+} else {
+  setShowError({
+    departureAirport: false,
+    arrivalAirport: false,
+    departureDate: false,
+  });
+}
+
+  
+  
+  
+    const dateFilter = searchResult.filter((flight)=>{
+
     
-    //searchResult sorted by price
+    const searchDateFilter =  new Date(searchData.departureDate)
+    const searchResultDate = new Date(flight.departureTime)
     
-    // const sortPrice = searchResult.slice().sort((a,b)=>b.price-a.price)
-    // console.log("sortPrice", sortPrice);
+    
+    const searchArrivalDate = new Date(searchData.arrivalDate)
+    const searchResultArrivalDate = new Date(flight.arrivalTime)
+    
+    const departureFilterDate = compareAsc(
+      searchResultDate,  searchDateFilter
+    ) === 0
+    
+     const arrivalFilterDate =
+       compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
+    if(!searchData.oneWay){
+    return departureFilterDate  &&  arrivalFilterDate   
+    }else{
+    return  arrivalFilterDate
+    }
+  
+    
+    // return departureFilterDate && arrivalFilterDate
+    })
+  
+  
+    setSearchResult(dateFilter);
+  };
+
+  //searchResult sorted by price
+
+  // const sortPrice = searchResult.slice().sort((a,b)=>b.price-a.price)
+  // console.log("sortPrice", sortPrice);
+  console.log("search.Dar", searchData.departureDate);
+
+  const fortmatDate = (time) => {
+    const newDate = time.split("-");
+    console.log("newDate", newDate[2]);
+
+    const newDateValue = newDate.reverse().join("/");
+
+    return newDateValue;
+  };
+  console.log("searchData", searchData);
+
+  const handleSortByDepartureTime = () => {
+    const sortedFlights = [...searchResult].sort((a, b) =>
+      compareAsc(new Date(a.departureTime), new Date(b.departureTime))
+    );
+    setSearchResult(sortedFlights);
+  };
+
+  const handleSortPirce = () => {
+    const sortPrice = [...searchResult].sort((a, b) => b.price - a.price);
+    setSearchResult(sortPrice);
+  };
   return (
     <div className="flight-search-form">
       <h2>Uçuş Arama</h2>
       <div className="form-group">
         <label>Kalkış Havaalanı</label>
-        <select
+        <input
+          type="text"
           name="departureAirport"
           value={searchData.departureAirport}
-          onChange={handleDepartureAirportChange}
-        >
-          <option value="">Kalkış Havaalanı Seçin</option>
-          {flight.code.map((item) => (
-            <option key={item.id} value={item.departureAirport}>
-              {item.departureCity} - {item.departureAirport}
-            </option>
-          ))}
-        </select>
+          onChange={handleChange}
+        />
+        {showError.departureAirport && (
+          <p className="error-message">Kalkış havaalanı boş bırakılamaz.</p>
+        )}
       </div>
       <div className="form-group">
         <label>Varış Havaalanı</label>
-        <select
-          name="departureAirport"
-          value={searchData.departureAirport}
-          onChange={handleDepartureAirportChange}
-        >
-          <option value="">Kalkış Havaalanı Seçin</option>
-          {flight.map((item) => (
-            <option key={item.id} value={item.departureAirport}>
-              {item.departureCity} - {item.departureAirport}
-            </option>
-          ))}
-        </select>
+        <input
+          type="text"
+          name="arrivalAirport"
+          value={searchData.arrivalAirport}
+          onChange={handleChange}
+        />
+        {showError.arrivalAirport && (
+          <p className="error-message">Kalkış havaalanı boş bırakılamaz.</p>
+        )}
       </div>
       <div className="form-group">
         <label>Kalkış Tarihi</label>
@@ -153,33 +217,37 @@ function FlightSearchForm() {
       <div className="form-group">
         <button onClick={handleSearch}>Uçuşları Ara</button>
       </div>
+      <div className="form-group">
+        <button onClick={handleSortByDepartureTime}>
+          Kalkış Zamanına Göre Sırala
+        </button>
+      </div>
 
+      <div className="form-group">
+        <button onClick={handleSortPirce}>fiyata göre sırala</button>
+      </div>
       <div>
         <div className="search-results">
-          <>
-            {/* <ul>
-              {flight.map((item)=>
-              
-                <li key={item.id}>
-                  <p>Kalkış: {item.departureCity}</p>
-                  <p>Varış: {item.arrivalCity}</p>
-                </li>
-              )}
-              
-            </ul>
-           */}
-          </>
-
-          {flightStatus === "succeded" && (
+          <></>
+       
+          {flightStatus === "succeded" && searchResult.length > 0 ? (
             <>
               {searchResult.map((flight) => (
                 <div key={flight.id} className="flight-result">
+                  <p>Kalkılan havalimanı: {flight.departureAirport}</p>
+                  <p>inilen havalimanı: {flight.arrivalAirport}</p>
                   <p>Kalkış: {flight.departureCity}</p>
                   <p>Varış: {flight.arrivalCity}</p>
+                  <p>Pricee: {flight.price}</p>
+                  <p>kALKIŞ ZAMANO: {fortmatDate(flight.departureTime)}</p>
+                  <p>Varış ZAMANI: {fortmatDate(flight.arrivalTime)}</p>
+                  {/* <p>Pirce: {flight.price}</p> */}
                   {/* Diğer bilgiler */}
                 </div>
               ))}
             </>
+          ) : (
+            <p>Uçuş Bulunamadı</p>
           )}
         </div>
       </div>

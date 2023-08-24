@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { format, compareAsc } from "date-fns";
+import { compareAsc } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFlights, setFlights } from "../redux/flightSlice";
+import { fetchFlights } from "../redux/flightSlice";
+import FlightSearchList from "./FlightSearchList";
+import FlightFilter from "./FlightFilter";
 function FlightSearchForm() {
   const [searchData, setSearchData] = useState({
     departureAirport: "",
@@ -16,7 +18,7 @@ function FlightSearchForm() {
   
 
   const dispatch = useDispatch();
-  const { flight, flightStatus, error } = useSelector((state) => state.flights);
+  const { flight, flightStatus } = useSelector((state) => state.flights);
   const [searchResult, setSearchResult] = useState();
   const [showError, setShowError] = useState({
     departureAirport: false,
@@ -29,9 +31,9 @@ function FlightSearchForm() {
 
       setSearchResult(flight);
     }
-  }, [setFlights, dispatch]);
+  }, [setSearchResult,  dispatch, flightStatus, flight ]);
 
-  console.log("searchResult", searchResult);
+
 
 
   useEffect(() => {
@@ -62,7 +64,6 @@ function FlightSearchForm() {
     setSearchResult(filteredFlights);
   }, [searchData, flight]);
 
-  console.log("flightts", flight);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSearchData((prevData) => ({
@@ -98,9 +99,6 @@ if (
     departureDate: false,
   });
 }
-
-  
-  
   
     const dateFilter = searchResult.filter((flight)=>{
 
@@ -123,42 +121,14 @@ if (
     }else{
     return  arrivalFilterDate
     }
-  
-    
-    // return departureFilterDate && arrivalFilterDate
+
     })
-  
-  
     setSearchResult(dateFilter);
   };
 
-  //searchResult sorted by price
 
-  // const sortPrice = searchResult.slice().sort((a,b)=>b.price-a.price)
-  // console.log("sortPrice", sortPrice);
-  console.log("search.Dar", searchData.departureDate);
 
-  const fortmatDate = (time) => {
-    const newDate = time.split("-");
-    console.log("newDate", newDate[2]);
 
-    const newDateValue = newDate.reverse().join("/");
-
-    return newDateValue;
-  };
-  console.log("searchData", searchData);
-
-  const handleSortByDepartureTime = () => {
-    const sortedFlights = [...searchResult].sort((a, b) =>
-      compareAsc(new Date(a.departureTime), new Date(b.departureTime))
-    );
-    setSearchResult(sortedFlights);
-  };
-
-  const handleSortPirce = () => {
-    const sortPrice = [...searchResult].sort((a, b) => b.price - a.price);
-    setSearchResult(sortPrice);
-  };
   return (
     <div className="flight-search-form">
       <h2>Uçuş Arama</h2>
@@ -217,40 +187,10 @@ if (
       <div className="form-group">
         <button onClick={handleSearch}>Uçuşları Ara</button>
       </div>
-      <div className="form-group">
-        <button onClick={handleSortByDepartureTime}>
-          Kalkış Zamanına Göre Sırala
-        </button>
-      </div>
-
-      <div className="form-group">
-        <button onClick={handleSortPirce}>fiyata göre sırala</button>
-      </div>
-      <div>
-        <div className="search-results">
-          <></>
-       
-          {flightStatus === "succeded" && searchResult.length > 0 ? (
-            <>
-              {searchResult.map((flight) => (
-                <div key={flight.id} className="flight-result">
-                  <p>Kalkılan havalimanı: {flight.departureAirport}</p>
-                  <p>inilen havalimanı: {flight.arrivalAirport}</p>
-                  <p>Kalkış: {flight.departureCity}</p>
-                  <p>Varış: {flight.arrivalCity}</p>
-                  <p>Pricee: {flight.price}</p>
-                  <p>kALKIŞ ZAMANO: {fortmatDate(flight.departureTime)}</p>
-                  <p>Varış ZAMANI: {fortmatDate(flight.arrivalTime)}</p>
-                  {/* <p>Pirce: {flight.price}</p> */}
-                  {/* Diğer bilgiler */}
-                </div>
-              ))}
-            </>
-          ) : (
-            <p>Uçuş Bulunamadı</p>
-          )}
-        </div>
-      </div>
+   
+      <FlightFilter searchResult={searchResult} setSearchResult={setSearchResult}/>
+    
+      <FlightSearchList flightStatus={flightStatus} searchResult={searchResult}/>
     </div>
   );
 }

@@ -45,6 +45,6 @@ extraReducers:(builder)=>{
 
 })
 
-export const {setFlights} = flightSlice.actions;
+// export const {} = flightSlice.actions;
 
 export default flightSlice.reducer
