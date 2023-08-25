@@ -68,9 +68,9 @@ const fortmatDate = (time) => {
           </li>
         ))
       ) : (
-        <div className='flex items-center space-x-2 justify-start w-96 p-2 m-4 bg-red-500 text-gray-50  rounded-lg'>
+        <div className='flex items-center space-x-2 justify-start  w-96 p-2 m-4 bg-red-500 text-gray-50  rounded-lg'>
             <BsExclamationCircleFill/>
-          <p>flight was demented</p>
+          <p>Flight was demented</p>
         </div>
       )}
     </>
