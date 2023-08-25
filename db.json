@@ -137,6 +137,39 @@
       "departureHour": "14:00",
       "arrivalHour": "16:30",
       "price": 800
+    },
+
+    {
+      "id": 10,
+      "airline": "AnadoluJet",
+      "departureAirportCode": "IST",
+      "arrivalAirportCode": "AYT",
+      "departureAirport": "Istanbul Havalimanı",
+      "arrivalAirport": "Antalya Havalimanı",
+      "departureCity": "Istanbul",
+      "arrivalCity": "Antalya",
+      "departureTime": "2023-08-26",
+      "arrivalTime": "2023-08-27",
+      "departureHour": "22:30",
+      "arrivalHour": "00:30",
+      "price": 800
+    },
+    
+    
+    {
+      "id": 11,
+      "airline": "FlightCo",
+      "departureAirportCode": "IST",
+      "arrivalAirportCode": "AYT",
+      "departureAirport": "Istanbul Havalimanı",
+      "arrivalAirport": "Antalya Havalimanı",
+      "departureCity": "Istanbul",
+      "arrivalCity": "Antalya",
+      "departureTime": "2023-08-27",
+      "arrivalTime": "2023-08-27",
+      "departureHour": "10:00",
+      "arrivalHour": "13:00",
+      "price": 900
     }
   ]
 }

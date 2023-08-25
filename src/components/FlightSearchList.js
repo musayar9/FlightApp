@@ -1,13 +1,40 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { compareAsc } from "date-fns";
 import Loading from "./Loading";
 import FlightList from "./FlightList";
 function FlightSearchList({ flightStatus, flight, searchResult, showFlight, setSearchResult }) {
+      const [open, setOpen] = useState(false);
+      const [filterOpen, setFilterOpen] = useState(false)
 
+           
     const handleSortPrice = () => {
-      const sortPrice = [...searchResult].sort((a, b) => b.price - a.price);
-      setSearchResult(sortPrice);
+     setFilterOpen(!filterOpen)
+     
+     if(filterOpen){
+       let sortPrice = [...searchResult].sort((a, b) => b.price - a.price);
+     setSearchResult(sortPrice)
+     
+     }else{
+     let sortFilter = [...searchResult].sort((a, b) => a.price - b.price);
+     setSearchResult(sortFilter)
+     }
+      
     };
+
+
+    const allFlightSort = flight.slice().sort((a, b) => b.price - a.price)
+
+
+
+    const handeClickAllFilter = ()=>{
+    
+      setOpen(!open)
+    }
+    
+
+    
+    
+    
   return (
     <>
       {flightStatus === "loading" && <Loading />}
@@ -27,10 +54,16 @@ function FlightSearchList({ flightStatus, flight, searchResult, showFlight, setS
                 </th>
                 <th scope="col" className="px-6 py-3 space-x-2">
                   <span>Prcie </span>
-                  <button type="button" onClick={handleSortPrice}>filter</button>
+                  <button
+                    type="button"
+                    onClick={showFlight ? handleSortPrice : handeClickAllFilter}
+                  >
+                    filter
+                  </button>
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Kalkı Tarihi
+                 
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Varış Tarihi
@@ -42,7 +75,7 @@ function FlightSearchList({ flightStatus, flight, searchResult, showFlight, setS
               {showFlight ? (
                 <FlightList item={searchResult} />
               ) : (
-                <FlightList item={flight} />
+                <FlightList item={open ? flight : allFlightSort  }  />
               )}
             </tbody>
           </table>

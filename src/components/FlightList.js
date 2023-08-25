@@ -17,14 +17,8 @@ const fortmatDate = (time) => {
     <>
       {item.length > 0 ? (
         item.map((flight) => (
-          <tr
-            key={flight.id}
-            classNameName=""
-          >
-            <td
-              
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrape"
-            >
+          <tr key={flight.id} className="">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrape">
               {flight.airline}
             </td>
             <td className="px-6 py-4">
@@ -49,10 +43,12 @@ const fortmatDate = (time) => {
           </tr>
         ))
       ) : (
-        <div classNameName="flex items-center space-x-2 justify-start  w-96 p-2 m-4 bg-red-500 text-gray-50  rounded-lg">
-          <BsExclamationCircleFill />
-          <p>Flight was demented</p>
-        </div>
+        <tr className="flex items-center space-x-2  w-full p-2 m-4 bg-red-500 text-gray-50  rounded-lg">
+          <td>
+            <BsExclamationCircleFill />
+          </td>
+          <td>Flight was demented</td>
+        </tr>
       )}
     </>
   );

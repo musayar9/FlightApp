@@ -443,7 +443,7 @@ function FlightSearchForm() {
         flightStatus={flightStatus}
         showFlight={showFlight}
         searchResult={searchResult}
-        flight={flight}
+        flight={flight.slice().sort((a, b) => a.price - b.price)}
         setSearchResult={setSearchResult}
       />
     </div>
