@@ -28,7 +28,7 @@ extraReducers:(builder)=>{
     //pending
     
     builder.addCase(fetchFlights.pending, (state, action)=>{
-        state.flightStatus = 'laoding'
+        state.flightStatus = 'loading'
     })
     
     builder.addCase(fetchFlights.fulfilled, (state, action)=>{

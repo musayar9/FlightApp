@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFlights } from "../redux/flightSlice";
 import FlightSearchList from "./FlightSearchList";
 import FlightFilter from "./FlightFilter";
-import {BsExclamationCircleFill} from 'react-icons/bs'
-import './flight.css'
+import { BsExclamationCircleFill } from "react-icons/bs";
+import "./flight.css";
+import Loading from "./Loading";
 function FlightSearchForm() {
   const [searchData, setSearchData] = useState({
     departureAirportCode: "",
@@ -21,7 +22,7 @@ function FlightSearchForm() {
 
   const [isDepartureFilter, setIsDepartureFilter] = useState(true);
   const [isArrivalFilter, setIsArrivalFilter] = useState(true);
-  const [showFlight, setShowFlight] = useState(false)
+  const [showFlight, setShowFlight] = useState(false);
   const dispatch = useDispatch();
   const { flight, flightStatus } = useSelector((state) => state.flights);
   const [searchResult, setSearchResult] = useState();
@@ -29,7 +30,7 @@ function FlightSearchForm() {
     departureAirport: false,
     arrivalAirport: false,
     departureDate: false,
-    arrivalDate:false,
+    arrivalDate: false,
   });
   const airlinePlane = [
     {
@@ -97,7 +98,6 @@ function FlightSearchForm() {
     }
   }, [setSearchResult, dispatch, flightStatus, flight]);
 
-
   useEffect(() => {
     // Uygun uçuşları filtreleme
 
@@ -123,23 +123,22 @@ function FlightSearchForm() {
 
     setSearchResult(filteredFlights);
     setShowFlight(false);
-  
-    
   }, [searchData, flight, setShowFlight, setSearchResult]);
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    if(name === "departureTime" && name==="arrivalTime" && isToday(new Date(value))){
-    setSearchData((prevDate)=>({
-    
-    ...prevDate,
-    departureDate:"",
-    arrivalDate:""
-    }))
-    return
+
+    if (
+      name === "departureTime" &&
+      name === "arrivalTime" &&
+      isToday(new Date(value))
+    ) {
+      setSearchData((prevDate) => ({
+        ...prevDate,
+        departureDate: "",
+        arrivalDate: "",
+      }));
+      return;
     }
     setSearchData((prevData) => ({
       ...prevData,
@@ -157,81 +156,75 @@ function FlightSearchForm() {
     }));
   };
 
-
   const handleAirportClick = (airportCode) => {
     setSearchData((prevData) => ({
       ...prevData,
       departureAirport: airportCode,
-  
-      
     }));
     setIsDepartureFilter(false);
-   setShowFlight(false)
+    setShowFlight(false);
+  };
+
+  const handleArrivalAirport = (airportCode) => {
+    setSearchData((prevData) => ({
+      ...prevData,
+      arrivalAirport: airportCode,
+    }));
+
+    setIsArrivalFilter(false);
+    setShowFlight(false);
+  };
+
+  const handleSearch = () => {
+    if (
+      searchData.departureAirport === "" ||
+      searchData.arrivalAirport === "" ||
+      searchData.departureDate === "" ||
+      searchData.arrivalDate === ""
+    ) {
+      setShowError({
+        departureAirport: searchData.departureAirport === "",
+        arrivalAirport: searchData.arrivalAirport === "",
+        departureDate: searchData.departureDate === "",
+        arrivalDate: searchData.arrivalDate === "",
+      });
+      return;
+    } else {
+      setShowError({
+        departureAirport: false,
+        arrivalAirport: false,
+        departureDate: false,
+      });
+    }
+
+    const dateFilter = searchResult.filter((flight) => {
+      const searchDateFilter = new Date(searchData.departureDate);
+      const searchResultDate = new Date(flight.departureTime);
+
+      const searchArrivalDate = new Date(searchData.arrivalDate);
+      const searchResultArrivalDate = new Date(flight.arrivalTime);
+
+      const departureFilterDate =
+        compareAsc(searchResultDate, searchDateFilter) === 0;
+
+      const arrivalFilterDate =
+        compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
+      if (!searchData.oneWay) {
+        return departureFilterDate && arrivalFilterDate;
+      } else {
+        return arrivalFilterDate;
+      }
+    });
+    setSearchResult(dateFilter);
+    setShowFlight(true);
   };
   
-    const handleArrivalAirport = (airportCode) => {
-      setSearchData((prevData) => ({
-        ...prevData,
-        arrivalAirport: airportCode,
-      }));
-    
-      setIsArrivalFilter(false);
-      setShowFlight(false);
-    };
 
-
-  
-
-   const handleSearch = () => {
-     if (
-       searchData.departureAirport === "" ||
-       searchData.arrivalAirport === "" ||
-       searchData.departureDate === "" ||
-       searchData.arrivalDate === ""
-     ) {
-       setShowError({
-         departureAirport: searchData.departureAirport === "",
-         arrivalAirport: searchData.arrivalAirport === "",
-         departureDate: searchData.departureDate === "",
-         arrivalDate: searchData.arrivalDate === "",
-       });
-       return;
-     } else {
-       setShowError({
-         departureAirport: false,
-         arrivalAirport: false,
-         departureDate: false,
-       });
-     }
-
-     const dateFilter = searchResult.filter((flight) => {
-       const searchDateFilter = new Date(searchData.departureDate);
-       const searchResultDate = new Date(flight.departureTime);
-
-       const searchArrivalDate = new Date(searchData.arrivalDate);
-       const searchResultArrivalDate = new Date(flight.arrivalTime);
-
-       const departureFilterDate =
-         compareAsc(searchResultDate, searchDateFilter) === 0;
-
-       const arrivalFilterDate =
-         compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
-       if (!searchData.oneWay) {
-         return departureFilterDate && arrivalFilterDate;
-       } else {
-         return arrivalFilterDate;
-       }
-     });
-     setSearchResult(dateFilter);
-     setShowFlight(true);
-   
- 
-   };
   return (
     <div className="mx-auto flex flex-col items-center content-center mt-10 ">
       <div className="border border-gray-300 w-[800px] p-10">
-        <div class="grid md:grid-cols-2 md:gap-6">
-          <div class="relative z-20 w-full mb-6 group">
+        <div className="grid md:grid-cols-2 md:gap-6">
+          <div className="relative z-20 w-full mb-6 group">
             <input
               type="text"
               name="departureAirport"
@@ -294,7 +287,7 @@ function FlightSearchForm() {
               </div>
             )}
           </div>
-          <div class="relative z-20 w-full mb-6 group">
+          <div className="relative z-20 w-full mb-6 group">
             <input
               type="text"
               name="arrivalAirport"
@@ -341,8 +334,8 @@ function FlightSearchForm() {
               </>
             )}
             <label
-              htmlForfor="arrivalAirport"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              htmlFor="arrivalAirport"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               ArrivalAirport
             </label>
@@ -369,7 +362,7 @@ function FlightSearchForm() {
             />
             <label
               htmlFor="depreatureDate"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Deprature Date
             </label>
@@ -383,7 +376,7 @@ function FlightSearchForm() {
               </div>
             )}
           </div>
-          <div class="relative w-full mb-6 group">
+          <div className="relative w-full mb-6 group">
             <input
               type="date"
               name="arrivalDate"
@@ -396,7 +389,7 @@ function FlightSearchForm() {
               disabled={searchData.oneWay}
             />
             <label
-              for="arrivalDate"
+              htmlFor="arrivalDate"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               ArrivalDate
@@ -412,10 +405,10 @@ function FlightSearchForm() {
           </div>
         </div>
 
-        <div class="flex items-center pl-4  rounded ">
+        <div className="flex items-center pl-4  rounded ">
           <input
             name="oneWay"
-            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
             id="oneWay"
             type="checkbox"
             checked={searchData.oneWay}
@@ -423,7 +416,7 @@ function FlightSearchForm() {
           />
           <label
             htmlFor="oneWay"
-            class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           >
             One Way Flight
           </label>
@@ -431,9 +424,9 @@ function FlightSearchForm() {
 
         <button
           onClick={handleSearch}
-          class="w-full relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
+          className="w-full relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
         >
-          <span class="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+          <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
             Search Flight
           </span>
         </button>
@@ -443,7 +436,7 @@ function FlightSearchForm() {
         searchResult={searchResult}
         setSearchResult={setSearchResult}
       /> */}
-
+      {/* {flightStatus === "loading" && <Loading />} */}
       <FlightSearchList
         flightStatus={flightStatus}
         showFlight={showFlight}
