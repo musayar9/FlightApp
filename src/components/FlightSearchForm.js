@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { compareAsc, isToday, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFlights } from "../redux/flightSlice";
+import { fetchAirline, fetchFlights } from "../redux/flightSlice";
 import FlightSearchList from "./FlightSearchList";
 import FlightFilter from "./FlightFilter";
 import { BsExclamationCircleFill } from "react-icons/bs";
@@ -23,8 +23,11 @@ function FlightSearchForm() {
   const [isDepartureFilter, setIsDepartureFilter] = useState(true);
   const [isArrivalFilter, setIsArrivalFilter] = useState(true);
   const [showFlight, setShowFlight] = useState(false);
+  const [showDate, setShowDate] = useState(false);
   const dispatch = useDispatch();
-  const { flight, flightStatus } = useSelector((state) => state.flights);
+  const { flight, flightStatus, airline, airlineStatus } = useSelector(
+    (state) => state.flights
+  );
   const [searchResult, setSearchResult] = useState();
   const [showError, setShowError] = useState({
     departureAirport: false,
@@ -32,63 +35,8 @@ function FlightSearchForm() {
     departureDate: false,
     arrivalDate: false,
   });
-  const airlinePlane = [
-    {
-      id: 1,
-      code: "IST",
-      airline: "Istanbul Havalimanı",
-      city: "Istanbul",
-    },
-
-    {
-      id: 2,
-      code: "SAW",
-      airline: "Sabiha Gökçen Havalimanı",
-      city: "Istanbul",
-    },
-
-    {
-      id: 3,
-      code: "ESB",
-      airline: "Esenboğa Havalimanı",
-      city: "Ankara",
-    },
-
-    {
-      id: 4,
-      code: "AYT",
-      airline: "Antalya Havalimanı",
-      city: "Antalya Havalimanı",
-    },
-
-    {
-      id: 5,
-      code: "VAS",
-      airline: "Sivas Nuri Demirağ Havalimanı",
-      city: "Sivas",
-    },
-
-    {
-      id: 6,
-      code: "ADA",
-      airline: "Şakirpaşa Havalimanı",
-      city: "Adana",
-    },
-
-    {
-      id: 7,
-      code: "CKZ",
-      airline: "Çanakkale Havalimanı",
-      city: "Çanakkale",
-    },
-
-    {
-      id: 8,
-      code: "ERZ",
-      airline: "Erzurum Havalimanı",
-      city: "Erzurum",
-    },
-  ];
+  // console.log(flight);
+  // console.log(airline);
 
   useEffect(() => {
     if (flightStatus === "idle") {
@@ -97,7 +45,11 @@ function FlightSearchForm() {
       setSearchResult(flight);
     }
   }, [setSearchResult, dispatch, flightStatus, flight]);
-
+  useEffect(() => {
+    if (airlineStatus === "idle") {
+      dispatch(fetchAirline());
+    }
+  }, [dispatch, airlineStatus, airline]);
   useEffect(() => {
     // Uygun uçuşları filtreleme
 
@@ -188,37 +140,32 @@ function FlightSearchForm() {
         departureDate: searchData.departureDate === "",
         arrivalDate: searchData.arrivalDate === "",
       });
-      return;
     } else {
       setShowError({
         departureAirport: false,
         arrivalAirport: false,
         departureDate: false,
+        arrivalDate: false,
       });
     }
-
     const dateFilter = searchResult.filter((flight) => {
       const searchDateFilter = new Date(searchData.departureDate);
       const searchResultDate = new Date(flight.departureTime);
-
-      const searchArrivalDate = new Date(searchData.arrivalDate);
-      const searchResultArrivalDate = new Date(flight.arrivalTime);
-
       const departureFilterDate =
         compareAsc(searchResultDate, searchDateFilter) === 0;
-
-      const arrivalFilterDate =
-        compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
-      if (!searchData.oneWay) {
+      if (searchData.oneWay === false) {
+        const searchArrivalDate = new Date(searchData.arrivalDate);
+        const searchResultArrivalDate = new Date(flight.arrivalTime);
+        const arrivalFilterDate =
+          compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
         return departureFilterDate && arrivalFilterDate;
       } else {
-        return arrivalFilterDate;
+        return departureFilterDate;
       }
     });
     setSearchResult(dateFilter);
     setShowFlight(true);
   };
-  
 
   return (
     <div className=" flex flex-col items-center content-center mt-10 ">
@@ -239,7 +186,7 @@ function FlightSearchForm() {
               <>
                 {isDepartureFilter && (
                   <div className="w-full border search border-gray-300  font-semibold h-fit rounded  bg-gray-50  absolute">
-                    {airlinePlane
+                    {airline
                       .filter((item) => {
                         const filterCode =
                           item.code
@@ -302,7 +249,7 @@ function FlightSearchForm() {
               <>
                 {isArrivalFilter && (
                   <div className="w-full border search border-gray-300  font-semibold h-fit rounded  bg-gray-50  absolute">
-                    {airlinePlane
+                    {airline
                       .filter((item) => {
                         const arrival =
                           item.code
@@ -395,12 +342,16 @@ function FlightSearchForm() {
               ArrivalDate
             </label>
             {showError.arrivalDate && (
-              <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
-                <BsExclamationCircleFill className="text-gray-50 font-bold " />
-                <p className="text-gray-50 text-sm">
-                  Arrival date cannot be left blank
-                </p>
-              </div>
+              <>
+                {searchData.oneWay || (
+                  <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
+                    <BsExclamationCircleFill className="text-gray-50 font-bold " />
+                    <p className="text-gray-50 text-sm">
+                      Arrival date cannot be left blank
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
