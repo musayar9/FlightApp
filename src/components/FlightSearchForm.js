@@ -221,7 +221,7 @@ function FlightSearchForm() {
   
 
   return (
-    <div className="mx-auto flex flex-col items-center content-center mt-10 ">
+    <div className=" flex flex-col items-center content-center mt-10 ">
       <div className="border border-gray-300 w-[800px] p-10">
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-20 w-full mb-6 group">
