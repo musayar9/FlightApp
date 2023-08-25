@@ -17,59 +17,40 @@ const fortmatDate = (time) => {
     <>
       {item.length > 0 ? (
         item.map((flight) => (
-          <li
+          <tr
             key={flight.id}
-            className="flex  items-center justify-center border border-gray-300 rounded-lg p-4 m-2"
+            className=""
           >
-            <div className="flex flex-col w-80 justify-around  ">
-              <div className="flex flex-row items-center justify-between">
-                <div className="flex items-start justify-start pl-4">
-                  <MdOutlineAirlines size={24} className="text-blue-600" />
-                  <h2 className="font-bold ">{flight.airline}</h2>
-                </div>
-                <div>
-                  {/* <p> {fortmatDate(flight.departureTime)}</p> */}
-                  <p className="flex">
-                    <FaPlaneArrival className="text-blue-700" />
-                    <span className="font-semibold underline">
-                      {fortmatDate(flight.arrivalTime)}
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-2 flex items-center justify-between">
-                <div>
-                  <p className="flex items-start  ">
-                    <FaPlaneDeparture size={24} className="text-blue-600" />
-                    <span>
-                      ( {flight.departureAirportCode}) - {flight.departureCity}
-                    </span>{" "}
-                    : <span>{flight.departureHour}</span>
-                  </p>
-                  <p className="flex items-center space-x-2">
-                    <FaPlaneArrival size={24} className="text-blue-600" />
-                    <span>
-                      ({flight.arrivalAirportCode}) - {flight.arrivalCity}
-                    </span>
-                    : <span> {flight.arrivalHour}</span>
-                  </p>
-                </div>
-                <div className="mt-5">
-                  <p>
-                    {new Intl.NumberFormat("tr-TR", {
-                      style: "currency",
-                      currency: "TRY",
-                    }).format(flight.price)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </li>
+            <td
+              
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              {flight.airline}
+            </td>
+            <td class="px-6 py-4">
+              {" "}
+              ( {flight.departureAirportCode}) - {flight.departureCity} :{" "}
+              {flight.departureHour}
+            </td>
+            <td class="px-6 py-4">
+              {" "}
+              ({flight.arrivalAirportCode}) - {flight.arrivalCity}:
+              {flight.arrivalHour}
+            </td>
+            <td class="px-6 py-4">
+              {" "}
+              {new Intl.NumberFormat("tr-TR", {
+                style: "currency",
+                currency: "TRY",
+              }).format(flight.price)}
+            </td>
+            <td class="px-6 py-4">{fortmatDate(flight.departureTime)}</td>
+            <td class="px-6 py-4">{fortmatDate(flight.arrivalTime)}</td>
+          </tr>
         ))
       ) : (
-        <div className='flex items-center space-x-2 justify-start  w-96 p-2 m-4 bg-red-500 text-gray-50  rounded-lg'>
-            <BsExclamationCircleFill/>
+        <div className="flex items-center space-x-2 justify-start  w-96 p-2 m-4 bg-red-500 text-gray-50  rounded-lg">
+          <BsExclamationCircleFill />
           <p>Flight was demented</p>
         </div>
       )}

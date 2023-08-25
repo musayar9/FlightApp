@@ -6,18 +6,47 @@ function FlightSearchList({ flightStatus, flight, searchResult, showFlight }) {
 
   
   return (
-    <div>
+    <>
       {flightStatus === "loading" && <Loading />}
-      <ul className="p-4 m-4 flex items-center flex-row flex-wrap justify-center ">
+      <div class="relative overflow-x-auto shadow-md ">
         {flightStatus === "succeded" && (
-          <>
-            {showFlight ? (
-             <FlightList item={searchResult}/>
-            ) : <FlightList item={flight}/>}
-          </>
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+           
+              <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3">
+                    Airline
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Kalkış-Saat
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Varış-Saat
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Prcie
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Kalkı Tarihi
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Varış Tarihi
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {showFlight ? (
+                  <FlightList item={searchResult} />
+                ) : (
+                  <FlightList item={flight} />
+                )}
+              </tbody>
+         
+          </table>
         )}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 }
 
