@@ -222,8 +222,8 @@ function FlightSearchForm() {
 
   return (
     <div className=" flex flex-col items-center content-center mt-10 ">
-      <div className="border border-gray-300 w-[800px] p-10">
-        <div className="grid md:grid-cols-2 md:gap-6">
+      <div className="border border-gray-300 w-[400px] md:w-[600px] lg:w-[800px] p-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="relative z-20 w-full mb-6 group">
             <input
               type="text"
@@ -349,7 +349,7 @@ function FlightSearchForm() {
             )}
           </div>
         </div>
-        <div className="grid md:grid-cols-2 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
             <input
               type="date"
