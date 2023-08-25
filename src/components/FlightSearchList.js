@@ -2,8 +2,8 @@ import React from "react";
 import { MdOutlineAirlines } from "react-icons/md";
 import {FaPlaneArrival, FaPlaneDeparture} from 'react-icons/fa'
 import { useSelector } from "react-redux";
-function FlightSearchList({ flightStatus, searchResult, showFlight }) {
-const { flight } = useSelector((state) => state.flights);
+function FlightSearchList({ flightStatus, flight, searchResult, showFlight }) {
+// const { flight } = useSelector((state) => state.flights);
   const fortmatDate = (time) => {
     const newDate = time.split("-");
     console.log("newDate", newDate[2]);
@@ -98,7 +98,12 @@ const { flight } = useSelector((state) => state.flights);
                           <h2 className="font-bold ">{flight.airline}</h2>
                         </div>
                         <div>
-                          {/* <p> {fortmatDate(flight.departureTime)}</p> */}
+                          <p className="flex">
+                            <FaPlaneDeparture className="text-blue-700" />
+                            <span className="font-semibold underline">
+                              {fortmatDate(flight.departureTime)}
+                            </span>
+                          </p>
                           <p className="flex">
                             <FaPlaneArrival className="text-blue-700" />
                             <span className="font-semibold underline">

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFlights } from "../redux/flightSlice";
 import FlightSearchList from "./FlightSearchList";
 import FlightFilter from "./FlightFilter";
+import {BsExclamationCircleFill} from 'react-icons/bs'
 import './flight.css'
 function FlightSearchForm() {
   const [searchData, setSearchData] = useState({
@@ -28,8 +29,65 @@ function FlightSearchForm() {
     departureAirport: false,
     arrivalAirport: false,
     departureDate: false,
+    arrivalDate:false,
   });
-  
+  const airlinePlane = [
+    {
+      id: 1,
+      code: "IST",
+      airline: "Istanbul Havalimanı",
+      city: "Istanbul",
+    },
+
+    {
+      id: 2,
+      code: "SAW",
+      airline: "Sabiha Gökçen Havalimanı",
+      city: "Istanbul",
+    },
+
+    {
+      id: 3,
+      code: "ESB",
+      airline: "Esenboğa Havalimanı",
+      city: "Ankara",
+    },
+
+    {
+      id: 4,
+      code: "AYT",
+      airline: "Antalya Havalimanı",
+      city: "Antalya Havalimanı",
+    },
+
+    {
+      id: 5,
+      code: "VAS",
+      airline: "Sivas Nuri Demirağ Havalimanı",
+      city: "Sivas",
+    },
+
+    {
+      id: 6,
+      code: "ADA",
+      airline: "Şakirpaşa Havalimanı",
+      city: "Adana",
+    },
+
+    {
+      id: 7,
+      code: "CKZ",
+      airline: "Çanakkale Havalimanı",
+      city: "Çanakkale",
+    },
+
+    {
+      id: 8,
+      code: "ERZ",
+      airline: "Erzurum Havalimanı",
+      city: "Erzurum",
+    },
+  ];
 
   useEffect(() => {
     if (flightStatus === "idle") {
@@ -65,7 +123,9 @@ function FlightSearchForm() {
 
     setSearchResult(filteredFlights);
     setShowFlight(false);
-  }, [searchData, flight]);
+  
+    
+  }, [searchData, flight, setShowFlight, setSearchResult]);
 
 
 
@@ -96,48 +156,7 @@ function FlightSearchForm() {
       arrivalDate: e.target.checked ? "" : prevData.arrivalDate,
     }));
   };
-  const handleSearch = () => {
-   
-    if (
-      searchData.departureAirport === "" ||
-      searchData.arrivalAirport === "" ||
-      searchData.departureDate === ""
-    ) {
-      setShowError({
-        departureAirport: searchData.departureAirport === "",
-        arrivalAirport: searchData.arrivalAirport === "",
-        departureDate: searchData.departureDate === "",
-      });
-      return;
-    } else {
-      setShowError({
-        departureAirport: false,
-        arrivalAirport: false,
-        departureDate: false,
-      });
-    }
 
-    const dateFilter = searchResult.filter((flight) => {
-      const searchDateFilter = new Date(searchData.departureDate);
-      const searchResultDate = new Date(flight.departureTime);
-
-      const searchArrivalDate = new Date(searchData.arrivalDate);
-      const searchResultArrivalDate = new Date(flight.arrivalTime);
-
-      const departureFilterDate =
-        compareAsc(searchResultDate, searchDateFilter) === 0;
-
-      const arrivalFilterDate =
-        compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
-      if (!searchData.oneWay) {
-        return departureFilterDate && arrivalFilterDate;
-      } else {
-        return arrivalFilterDate;
-      }
-    });
-    setSearchResult(dateFilter);
-    setShowFlight(true)
-  };
 
   const handleAirportClick = (airportCode) => {
     setSearchData((prevData) => ({
@@ -147,7 +166,7 @@ function FlightSearchForm() {
       
     }));
     setIsDepartureFilter(false);
-   
+   setShowFlight(false)
   };
   
     const handleArrivalAirport = (airportCode) => {
@@ -157,40 +176,57 @@ function FlightSearchForm() {
       }));
     
       setIsArrivalFilter(false);
+      setShowFlight(false);
     };
 
-  const getUniqueAirports = () => {
-    const uniqueAirportsMap = new Map();
 
-    flight.forEach((item) => {
-      if (!uniqueAirportsMap.has(item.departureAirportCode)) {
-        uniqueAirportsMap.set(item.departureAirportCode, {
-          departureAirportCode: item.departureAirportCode,
-          departureAirport: item.departureAirport,
-        });
-      }
-    });
-
-    return Array.from(uniqueAirportsMap.values());
-  };
-
-  const getUniqueArrival = () => {
-    const uniqueAirportsMap = new Map();
-
-    flight.forEach((item) => {
-      if (!uniqueAirportsMap.has(item.arrivalAirportCode)) {
-        uniqueAirportsMap.set(item.arrivalAirportCode, {
-          arrivalAirportCode: item.arrivalAirportCode,
-          arrivalAirport: item.arrivalAirport,
-        });
-      }
-    });
-
-    return Array.from(uniqueAirportsMap.values());
-  };
   
 
+   const handleSearch = () => {
+     if (
+       searchData.departureAirport === "" ||
+       searchData.arrivalAirport === "" ||
+       searchData.departureDate === "" ||
+       searchData.arrivalDate === ""
+     ) {
+       setShowError({
+         departureAirport: searchData.departureAirport === "",
+         arrivalAirport: searchData.arrivalAirport === "",
+         departureDate: searchData.departureDate === "",
+         arrivalDate: searchData.arrivalDate === "",
+       });
+       return;
+     } else {
+       setShowError({
+         departureAirport: false,
+         arrivalAirport: false,
+         departureDate: false,
+       });
+     }
+
+     const dateFilter = searchResult.filter((flight) => {
+       const searchDateFilter = new Date(searchData.departureDate);
+       const searchResultDate = new Date(flight.departureTime);
+
+       const searchArrivalDate = new Date(searchData.arrivalDate);
+       const searchResultArrivalDate = new Date(flight.arrivalTime);
+
+       const departureFilterDate =
+         compareAsc(searchResultDate, searchDateFilter) === 0;
+
+       const arrivalFilterDate =
+         compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
+       if (!searchData.oneWay) {
+         return departureFilterDate && arrivalFilterDate;
+       } else {
+         return arrivalFilterDate;
+       }
+     });
+     setSearchResult(dateFilter);
+     setShowFlight(true);
+   
  
+   };
   return (
     <div className="mx-auto flex flex-col items-center content-center mt-10 ">
       <div className="border border-gray-300 w-[800px] p-10">
@@ -209,29 +245,34 @@ function FlightSearchForm() {
             {searchData.departureAirport && (
               <>
                 {isDepartureFilter && (
-                  <div className="w-full border search border-gray-300  font-semibold h-24 overflow-x-auto rounded  bg-gray-50  absolute">
-                    {getUniqueAirports()
-                      .filter((item) =>
-                        item.departureAirportCode
-                          .toLocaleLowerCase("TR")
-                          .includes(
-                            searchData.departureAirportCode.toLocaleLowerCase(
-                              "TR"
-                            )
-                          )
-                      )
+                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded  bg-gray-50  absolute">
+                    {airlinePlane
+                      .filter((item) => {
+                        const filterCode =
+                          item.code
+                            .toLocaleLowerCase("TR")
+                            .includes(
+                              searchData.departureAirport.toLocaleLowerCase(
+                                "TR"
+                              )
+                            ) ||
+                          item.city
+                            .toLocaleLowerCase("TR")
+                            .includes(
+                              searchData.departureAirport.toLocaleLowerCase(
+                                "TR"
+                              )
+                            );
+
+                        return filterCode;
+                      })
                       .map((filteredItem) => (
                         <p
                           className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-0.5"
                           key={filteredItem.id}
-                          onClick={() =>
-                            handleAirportClick(
-                              filteredItem.departureAirportCode
-                            )
-                          }
+                          onClick={() => handleAirportClick(filteredItem.code)}
                         >
-                          {filteredItem.departureAirportCode} -
-                          {filteredItem.departureAirport}
+                          {filteredItem.code} -{filteredItem.airline}
                         </p>
                       ))}
                   </div>
@@ -245,7 +286,12 @@ function FlightSearchForm() {
               Departure Airport
             </label>
             {showError.departureAirport && (
-              <p className="error-message">Kalkış havaalanı boş bırakılamaz.</p>
+              <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
+                <BsExclamationCircleFill className="text-gray-50 font-bold " />
+                <p className="text-gray-50 text-sm">
+                  The departure airport cannot be left blank.
+                </p>
+              </div>
             )}
           </div>
           <div class="relative z-20 w-full mb-6 group">
@@ -262,29 +308,32 @@ function FlightSearchForm() {
             {searchData.arrivalAirport && (
               <>
                 {isArrivalFilter && (
-                  <div className="w-full border search border-gray-300  font-semibold h-24 overflow-x-auto rounded  bg-gray-50  absolute">
-                    {getUniqueArrival()
-                      .filter((item) =>
-                        item.arrivalAirportCode
-                          .toLocaleLowerCase("TR")
-                          .includes(
-                            searchData.arrivalAirportCode.toLocaleLowerCase(
-                              "TR"
-                            )
-                          )
-                      )
+                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded  bg-gray-50  absolute">
+                    {airlinePlane
+                      .filter((item) => {
+                        const arrival =
+                          item.code
+                            .toLocaleLowerCase("TR")
+                            .includes(
+                              searchData.arrivalAirport.toLocaleLowerCase("TR")
+                            ) ||
+                          item.city
+                            .toLocaleLowerCase("TR")
+                            .includes(
+                              searchData.arrivalAirport.toLocaleLowerCase("TR")
+                            );
+
+                        return arrival;
+                      })
                       .map((filteredItem) => (
                         <p
                           className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-0.5"
                           key={filteredItem.id}
                           onClick={() =>
-                            handleArrivalAirport(
-                              filteredItem.arrivalAirportCode
-                            )
+                            handleArrivalAirport(filteredItem.code)
                           }
                         >
-                          {filteredItem.arrivalAirportCode} -
-                          {filteredItem.arrivalAirport}
+                          {filteredItem.code} -{filteredItem.airline}
                         </p>
                       ))}
                   </div>
@@ -298,7 +347,12 @@ function FlightSearchForm() {
               ArrivalAirport
             </label>
             {showError.arrivalAirport && (
-              <p className="error-message">Kalkış havaalanı boş bırakılamaz.</p>
+              <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
+                <BsExclamationCircleFill className="text-gray-50 font-bold " />
+                <p className="text-gray-50 text-sm">
+                  The arrival airport cannot be left blank.
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -319,6 +373,15 @@ function FlightSearchForm() {
             >
               Deprature Date
             </label>
+
+            {showError.departureDate && (
+              <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
+                <BsExclamationCircleFill className="text-gray-50 font-bold " />
+                <p className="text-gray-50 text-sm">
+                  Departure date cannot be left blank
+                </p>
+              </div>
+            )}
           </div>
           <div class="relative w-full mb-6 group">
             <input
@@ -338,6 +401,14 @@ function FlightSearchForm() {
             >
               ArrivalDate
             </label>
+            {showError.arrivalDate && (
+              <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
+                <BsExclamationCircleFill className="text-gray-50 font-bold " />
+                <p className="text-gray-50 text-sm">
+                  Arrival date cannot be left blank
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -373,16 +444,12 @@ function FlightSearchForm() {
         setSearchResult={setSearchResult}
       /> */}
 
-
-
       <FlightSearchList
         flightStatus={flightStatus}
-        
         showFlight={showFlight}
         searchResult={searchResult}
+        flight={flight}
       />
-      
-
     </div>
   );
 }
