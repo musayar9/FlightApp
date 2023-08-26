@@ -15,6 +15,7 @@
       "arrivalHour": "01:15",
       "returnDepartureHour": "14:30",
       "returnArrivalHour": "16:45",
+      "wayLength": "2:15",
       "price": 150
     },
     {
@@ -32,6 +33,7 @@
       "arrivalHour": "01:00",
       "returnDepartureHour": "22:30",
       "returnArrivalHour": "00:30",
+      "wayLength": "2:00",
       "price": 200
     },
 
@@ -50,6 +52,7 @@
       "arrivalHour": "02:30",
       "returnDepartureHour": "21:30",
       "returnArrivalHour": "00:00",
+      "wayLength": "2:30",
       "price": 500
     },
     {
@@ -63,11 +66,11 @@
       "arrivalCity": "Antalya",
       "departureTime": "2023-08-26",
       "arrivalTime": "2023-08-29",
-      "departureHour": "09:00",
+      "departureHour": "10:00",
       "arrivalHour": "12:00",
       "returnDepartureHour": "02:30",
       "returnArrivalHour": "04:30",
-
+      "wayLength": "2:00",
       "price": 600
     },
     {
@@ -85,6 +88,7 @@
       "arrivalHour": "00:15",
       "returnDepartureHour": "09:30",
       "returnArrivalHour": "10:45",
+      "wayLength": "1:15",
       "price": 70
     },
     {
@@ -99,9 +103,10 @@
       "departureTime": "2023-08-27",
       "arrivalTime": "2023-08-30",
       "departureHour": "15:45",
-      "arrivalHour": "17:45",
+      "arrivalHour": "18:15",
       "returnDepartureHour": "20:00",
-      "returnArrivalHour": "22:00",
+      "returnArrivalHour": "22:30",
+      "wayLength": "2:30",
       "price": 300
     },
 
@@ -116,10 +121,11 @@
       "arrivalCity": "Ankara",
       "departureTime": "2023-08-27",
       "arrivalTime": "2023-08-28",
-      "departureHour": "22:00",
-      "arrivalHour": "01:00",
-      "returnDepartureHour": "23:30",
-      "returnArrivalHour": "01:30",
+      "departureHour": "23:00",
+      "arrivalHour": "00:15",
+      "returnDepartureHour": "22:30",
+      "returnArrivalHour": "23:45",
+      "wayLength": "1:15",
       "price": 250
     },
 
@@ -134,10 +140,11 @@
       "arrivalCity": "Erzurum",
       "departureTime": "2023-08-26",
       "arrivalTime": "2023-08-31",
-      "departureHour": "21:30",
-      "arrivalHour": "01:30",
+      "departureHour": "23:30",
+      "arrivalHour": "01:40",
       "returnDepartureHour": "13:30",
-      "returnArrivalHour": "15:30",
+      "returnArrivalHour": "15:40",
+      "wayLength": "2:10",
       "price": 900
     },
     {
@@ -154,7 +161,8 @@
       "departureHour": "14:00",
       "arrivalHour": "16:30",
       "returnDepartureHour": "02:30",
-      "returnArrivalHour": "04:30",
+      "returnArrivalHour": "04:00",
+      "wayLength": "1:30",
       "price": 800
     },
 
@@ -170,9 +178,10 @@
       "departureTime": "2023-08-27",
       "arrivalTime": "2023-08-29",
       "departureHour": "22:30",
-      "arrivalHour": "00:30",
+      "arrivalHour": "00:35",
       "returnDepartureHour": "15:30",
-      "returnArrivalHour": "16:30",
+      "returnArrivalHour": "16:35",
+      "wayLength": "2:05",
       "price": 800
     },
 
@@ -191,6 +200,7 @@
       "arrivalHour": "13:00",
       "returnDepartureHour": "09:30",
       "returnArrivalHour": "12:30",
+      "wayLength": "2:00",
       "price": 900
     },
     {
@@ -205,9 +215,10 @@
       "departureTime": "2023-08-26",
       "arrivalTime": "2023-08-28",
       "departureHour": "22:00",
-      "arrivalHour": "23:15",
+      "arrivalHour": "23:20",
       "returnDepartureHour": "10:30",
-      "returnArrivalHour": "12:30",
+      "returnArrivalHour": "11:50",
+      "wayLength": "1:20",
       "price": 150
     },
     {
@@ -225,6 +236,7 @@
       "arrivalHour": "19:15",
       "returnDepartureHour": "14:15",
       "returnArrivalHour": "15:45",
+      "wayLength": "1:15",
       "price": 300
     }
   ]

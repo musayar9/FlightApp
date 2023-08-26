@@ -1,11 +1,10 @@
 import React from 'react'
-import { useSelector } from "react-redux";
-import { MdOutlineAirlines } from "react-icons/md";
-import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
+
+
 import { BsExclamationCircleFill } from "react-icons/bs";
 function FlightList({item, showDate}) {
 
-// const { error } = useSelector((state) => state.flights);
+//tarih formatlama alanı
 const fortmatDate = (time) => {
   const newDate = time.split("-");
 
@@ -14,6 +13,14 @@ const fortmatDate = (time) => {
   return newDateValue;
 };
 
+// saat formatlama
+function formatTimeManually(timeStr) {
+  const [hours, minutes] = timeStr.split(":");
+  const hourUnit = parseInt(hours) >0 ? "s." :"saat"
+  const minuteUnit = parseInt(minutes) >0 ? "dakika" : "dk";
+
+  return `${hours}${hourUnit} : ${minutes} ${minuteUnit}`;
+}
   return (
     <>
       {item.length > 0 ? (
@@ -37,7 +44,7 @@ const fortmatDate = (time) => {
               <>
                 <td className="px-6 py-4">
                   {" "}
-                  ( {flight.arrivalAirportCode}) -{flight.returnDepartureHour}
+                  ({flight.arrivalAirportCode}) -{flight.returnDepartureHour}
                 </td>
                 <td className="px-6 py-4">
                   {" "}
@@ -47,7 +54,13 @@ const fortmatDate = (time) => {
                   <td className="px-6 py-4">{fortmatDate(flight.arrivalTime)}</td>
               </>
             )}
-
+            {
+          
+            <td className='px-6 py-4' >
+            {formatTimeManually(flight.wayLength)}
+            
+            </td>
+            }
           
             <td className="px-6 py-4">
               {" "}

@@ -3,10 +3,11 @@ import { compareAsc, isToday, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAirline, fetchFlights } from "../redux/flightSlice";
 import FlightSearchList from "./FlightSearchList";
-import FlightFilter from "./FlightFilter";
+
 import { BsExclamationCircleFill } from "react-icons/bs";
 import "./flight.css";
-import Loading from "./Loading";
+import Error from "./Error";
+
 function FlightSearchForm() {
   const [searchData, setSearchData] = useState({
     departureAirportCode: "",
@@ -25,7 +26,7 @@ function FlightSearchForm() {
   const [showFlight, setShowFlight] = useState(false);
   const [showDate, setShowDate] = useState(false);
   const dispatch = useDispatch();
-  const { flight, flightStatus, airline, airlineStatus } = useSelector(
+  const { flight, flightStatus, airline, airlineStatus, error } = useSelector(
     (state) => state.flights
   );
   const [searchResult, setSearchResult] = useState();
@@ -35,17 +36,18 @@ function FlightSearchForm() {
     departureDate: false,
     arrivalDate: false,
   });
-  // console.log(flight);
-  // console.log(airline);
 
   useEffect(() => {
     if (flightStatus === "idle") {
+      //Api üzerinden uçuş detaylarını çekme
       dispatch(fetchFlights());
 
+      //api üzerinden çekilen uçuş detaylarını bir arraya aktarma
       setSearchResult(flight);
     }
   }, [setSearchResult, dispatch, flightStatus, flight]);
   useEffect(() => {
+    //Havaalanı kodları ve şehir bilgilerine göre apiden veri çekme
     if (airlineStatus === "idle") {
       dispatch(fetchAirline());
     }
@@ -72,12 +74,12 @@ function FlightSearchForm() {
 
       return departureMatch && arrivalMatch;
     });
-   
+
     setSearchResult(filteredFlights);
     setShowFlight(false);
-    //  setShowDate(false);
   }, [searchData, flight, setShowFlight, setSearchResult, setShowDate]);
 
+  //Tarihe göre filtreleme ve geçmiş tarih üzerinde işlem yapılamama alanı
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -100,16 +102,17 @@ function FlightSearchForm() {
     if (name === "departureAirport") setIsDepartureFilter(true);
     if (name === "arrivalAirport") setIsArrivalFilter(true);
   };
-
+  //Tek Yönlü Uçuş Kontrol
   const handleOneWayChange = (e) => {
     setSearchData((prevData) => ({
       ...prevData,
       oneWay: e.target.checked,
       arrivalDate: e.target.checked ? "" : prevData.arrivalDate,
     }));
-    setShowDate(!showDate)
+    setShowDate(!showDate);
   };
 
+  //kalkış inputı alnından havaalanı kodunu vaya şehir adı üzerinde search etme alanı
   const handleAirportClick = (airportCode) => {
     setSearchData((prevData) => ({
       ...prevData,
@@ -118,7 +121,7 @@ function FlightSearchForm() {
     setIsDepartureFilter(false);
     setShowFlight(false);
   };
-
+  //varış inputı alnından havaalanı kodunu vaya şehir adı üzerinde search etme alanı
   const handleArrivalAirport = (airportCode) => {
     setSearchData((prevData) => ({
       ...prevData,
@@ -128,7 +131,10 @@ function FlightSearchForm() {
     setIsArrivalFilter(false);
     setShowFlight(false);
   };
-
+  
+  /*kalkış havaalanı, dönüş havaalanına, kalkış tarihi, ve dönüş tarihine göre girilen verilerin kontrol alanı
+  girilen veriler üzerinden istenilen  karşılanıyorsa filter işlemi gerçekleşecek eğer karşılanmıyosa hata mesajları gösterilecek
+*/
   const handleSearch = () => {
     if (
       searchData.departureAirport === "" ||
@@ -142,7 +148,6 @@ function FlightSearchForm() {
         departureDate: searchData.departureDate === "",
         arrivalDate: searchData.arrivalDate === "",
       });
-     
     } else {
       setShowError({
         departureAirport: false,
@@ -156,17 +161,15 @@ function FlightSearchForm() {
       const searchResultDate = new Date(flight.departureTime);
       const departureFilterDate =
         compareAsc(searchResultDate, searchDateFilter) === 0;
-        
-               const searchArrivalDate = new Date(searchData.arrivalDate);
-               const searchResultArrivalDate = new Date(flight.arrivalTime);
 
-               const arrivalFilterDate =
-                 compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
+      const searchArrivalDate = new Date(searchData.arrivalDate);
+      const searchResultArrivalDate = new Date(flight.arrivalTime);
+
+      const arrivalFilterDate =
+        compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
       if (flight.oneWay) {
- 
-        return  arrivalFilterDate;
+        return arrivalFilterDate;
       } else {
-       
         return departureFilterDate;
       }
     });
@@ -174,9 +177,13 @@ function FlightSearchForm() {
     setShowFlight(true);
   };
 
+
+if(flightStatus === "failed"){
+return (<div><Error message={error}/> </div>)
+}
   return (
     <div className=" flex flex-col items-center content-center mt-10 ">
-      <div className="border border-gray-300 w-[400px] md:w-[600px] lg:w-[800px] p-10">
+      <div className="shadow shadow-slate-400 rounded-lg w-[400px] md:w-[600px] lg:w-[800px] p-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="relative z-20 w-full mb-6 group">
             <input
@@ -192,7 +199,7 @@ function FlightSearchForm() {
             {searchData.departureAirport && (
               <>
                 {isDepartureFilter && (
-                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded  bg-gray-50  absolute">
+                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded-lg p-1 bg-gray-50  absolute">
                     {airline
                       .filter((item) => {
                         const filterCode =
@@ -215,7 +222,7 @@ function FlightSearchForm() {
                       })
                       .map((filteredItem) => (
                         <p
-                          className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-0.5"
+                          className="font-semibold  hover:bg-gray-300 hover:text-gray-50 cursor-pointer w-full p-1"
                           key={filteredItem.id}
                           onClick={() => handleAirportClick(filteredItem.code)}
                         >
@@ -255,7 +262,7 @@ function FlightSearchForm() {
             {searchData.arrivalAirport && (
               <>
                 {isArrivalFilter && (
-                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded  bg-gray-50  absolute">
+                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded-lg p-1  bg-gray-50  absolute">
                     {airline
                       .filter((item) => {
                         const arrival =
@@ -274,7 +281,7 @@ function FlightSearchForm() {
                       })
                       .map((filteredItem) => (
                         <p
-                          className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-0.5"
+                          className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-1"
                           key={filteredItem.id}
                           onClick={() =>
                             handleArrivalAirport(filteredItem.code)
@@ -346,7 +353,7 @@ function FlightSearchForm() {
               htmlFor="arrivalDate"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              ArrivalDate
+              Return Date
             </label>
             {showError.arrivalDate && (
               <>
@@ -392,16 +399,11 @@ function FlightSearchForm() {
         </button>
       </div>
 
-      {/* <FlightFilter
-        searchResult={searchResult}
-        setSearchResult={setSearchResult}
-      /> */}
-      {/* {flightStatus === "loading" && <Loading />} */}
       <FlightSearchList
         flightStatus={flightStatus}
         showFlight={showFlight}
         searchResult={searchResult}
-        flight={flight.slice().sort((a,b)=>b.price-a.price)}
+        flight={flight.slice().sort((a, b) => b.price - a.price)}
         setSearchResult={setSearchResult}
         showDate={showDate}
       />

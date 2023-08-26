@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import { compareAsc, parse } from "date-fns";
 import Loading from "./Loading";
 import FlightList from "./FlightList";
+import { MdOutlineAirlines } from "react-icons/md";
+import {
+  FaPlaneArrival,
+  FaPlaneDeparture,
+  FaArrowCircleUp,
+  FaArrowCircleDown
+} from "react-icons/fa";
+import { AiTwotoneFilter, AiOutlineFilter } from "react-icons/ai";
 function FlightSearchList({
   flightStatus,
   flight,
@@ -14,6 +22,10 @@ function FlightSearchList({
   const [filterOpen, setFilterOpen] = useState(false);
   const [filterHour, setHourFilter] = useState(false);
   const [returnHour, setReturnHour] = useState(false);
+
+  const [wayLength, setWayLength] = useState(false);
+
+//Fiyata göre filtreleme
   const handleSortPrice = () => {
     setFilterOpen(!filterOpen);
 
@@ -26,46 +38,52 @@ function FlightSearchList({
     }
   };
 
+  //Yol uzunluğun göre filtreleme
 
+  const handleWayLength = () => {
+    setWayLength(!wayLength);
 
-const allFlightSort = flight.slice().sort((a, b) => a.price - b.price);
-  
-    const handleSortDepartureTime = () => {
-    setHourFilter(!filterHour)
-      const sortedFlights = [...searchResult].sort((a, b) => {
-    
-        const departureTimeA = parse(a.departureHour, "HH:mm", new Date());
-        const departureTimeB = parse(b.departureHour, "HH:mm", new Date());
+    const wayStatus = [...searchResult].sort((a, b) => {
+      const wayA = parse(a.wayLength, "HH:mm", new Date());
+      const wayB = parse(b.wayLength, "HH:mm", new Date());
 
-        return (
-          filterHour ? compareAsc(departureTimeA, departureTimeB) : compareAsc(departureTimeB, departureTimeA)
-        )
-      });
+      return wayLength ? compareAsc(wayA, wayB) : compareAsc(wayB, wayA);
+    });
 
-      setSearchResult(sortedFlights);
-    };
-    
- const    handleSortReturnDepartureHour = ()=>{
-    setReturnHour(!returnHour)
-      const sortedFlights = [...searchResult].sort((a, b) => {
-        const departureTimeA = parse(
-          a.returnDepartureHour,
-          "HH:mm",
-          new Date()
-        );
-        const departureTimeB = parse(
-          b.returnDepartureHour,
-          "HH:mm",
-          new Date()
-        );
+    setSearchResult(wayStatus);
+  };
 
-        return returnHour
-          ? compareAsc(departureTimeA, departureTimeB)
-          : compareAsc(departureTimeB, departureTimeA);
-      });
+  //Kalkış tarihine göre filtreleme
+  const allFlightSort = flight.slice().sort((a, b) => a.price - b.price);
 
-      setSearchResult(sortedFlights);
-    }
+  const handleSortDepartureTime = () => {
+    setHourFilter(!filterHour);
+    const sortedFlights = [...searchResult].sort((a, b) => {
+      const departureTimeA = parse(a.departureHour, "HH:mm", new Date());
+      const departureTimeB = parse(b.departureHour, "HH:mm", new Date());
+
+      return filterHour
+        ? compareAsc(departureTimeA, departureTimeB)
+        : compareAsc(departureTimeB, departureTimeA);
+    });
+
+    setSearchResult(sortedFlights);
+  };
+
+  //Dönüş saatine göre filtreleme
+  const handleSortReturnDepartureHour = () => {
+    setReturnHour(!returnHour);
+    const sortedFlights = [...searchResult].sort((a, b) => {
+      const departureTimeA = parse(a.returnDepartureHour, "HH:mm", new Date());
+      const departureTimeB = parse(b.returnDepartureHour, "HH:mm", new Date());
+
+      return returnHour
+        ? compareAsc(departureTimeA, departureTimeB)
+        : compareAsc(departureTimeB, departureTimeA);
+    });
+
+    setSearchResult(sortedFlights);
+  };
 
   const handeClickAllFilter = () => {
     setOpen(!open);
@@ -77,57 +95,89 @@ const allFlightSort = flight.slice().sort((a, b) => a.price - b.price);
       <div className="relative overflow-x-auto shadow-lg mt-5 mb-5 rounded-md">
         {flightStatus === "succeded" && (
           <table className="w-full text-sm text-left text-gray-500  ">
-            <thead className="text-sm text-gray-200 uppercase  bg-gradient-to-br from-green-400 to-blue-600">
+            <thead className="text-sm text-gray-200 capitalize  bg-gradient-to-br from-green-400 to-blue-600">
               <tr>
-                <th scope="col" className="px-6 py-3">
-                  Airline
+                <th scope="col" className="px-4 py-3">
+                  <span className="flex">
+                    <MdOutlineAirlines size={24} className="p-1"/> Airline
+                  </span>
                 </th>
-                <th scope="col" className="px-6 py-3 space-x-2">
-                  <span>Kalkış-Saat</span>
+                <th scope="col" className="px-4 py-3 space-x-1 flex">
+                  <span className="flex">
+                    <FaPlaneDeparture size={24} className="pr-2" /> Departure{" "}
+                  </span>
 
                   {showFlight && (
                     <button type="button" onClick={handleSortDepartureTime}>
-                      filter
+                      {filterHour ? (
+                        <AiOutlineFilter size={18} />
+                      ) : (
+                        <AiTwotoneFilter size={18} />
+                      )}
                     </button>
                   )}
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Varış-Saat
+                <th scope="col" className="px-4 py-3">
+                  <span className="flex">
+                    <FaPlaneArrival size={26} className="pr-2" /> Arrival{" "}
+                  </span>
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Kalkı Tarihi
+                <th scope="col" className="px-4 py-3">
+                  Departure Date
                 </th>
+
                 {!showDate && (
                   <>
-                    <th scope="col" className="px-6 py-3 space-x-2">
-                      <span>Dönüş K Saa</span>
+                    <th scope="col" className="px-4 py-3 space-x-1 flex">
+                      <span className="flex">
+                        <FaPlaneDeparture size={24} className="pr-2" />
+                        Return Dep.{" "}
+                      </span>
 
                       {showFlight && (
                         <button
                           type="button"
                           onClick={handleSortReturnDepartureHour}
                         >
-                          filter
+                          {returnHour ? (
+                            <AiOutlineFilter size={18} />
+                          ) : (
+                            <AiTwotoneFilter size={18} />
+                          )}
                         </button>
                       )}
                     </th>
-                    <th scope="col" className="px-6 py-3">
-                      Dönüş Varış Saat
+                    <th scope="col" className="px-4 py-3">
+                      <span className="flex">
+                        <FaPlaneArrival size={26} className="pr-2" /> Return
+                        Arr.{" "}
+                      </span>
                     </th>
-                    
-                     <th scope="col" className="px-6 py-3">
-                    dÖNÜŞ Tarihi
-                  </th>
+
+                    <th scope="col" className="px-4 py-3">
+                      Return Date
+                    </th>
                   </>
                 )}
-       
-                <th scope="col" className="px-6 py-3 space-x-2">
+                <th scope="col" className="px-4 py-3">
+                  Way Length
+                  {showFlight && (
+                    <button type="button" onClick={handleWayLength}>
+                      {wayLength ? (
+                        <AiOutlineFilter size={18} />
+                      ) : (
+                        <AiTwotoneFilter size={18} />
+                      )}
+                    </button>
+                  )}
+                </th>
+                <th scope="col" className="px-4 py-3 space-x-2">
                   <span>Prcie </span>
                   <button
                     type="button"
                     onClick={showFlight ? handleSortPrice : handeClickAllFilter}
                   >
-                    filter
+                    {open || filterOpen ? <FaArrowCircleUp/> :<FaArrowCircleDown/>}
                   </button>
                 </th>
               </tr>
