@@ -156,13 +156,15 @@ function FlightSearchForm() {
       const searchResultDate = new Date(flight.departureTime);
       const departureFilterDate =
         compareAsc(searchResultDate, searchDateFilter) === 0;
-      if (searchData.oneWay === false) {
-        const searchArrivalDate = new Date(searchData.arrivalDate);
-        const searchResultArrivalDate = new Date(flight.arrivalTime);
-       
-        const arrivalFilterDate =
-          compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
-        return departureFilterDate && arrivalFilterDate;
+        
+               const searchArrivalDate = new Date(searchData.arrivalDate);
+               const searchResultArrivalDate = new Date(flight.arrivalTime);
+
+               const arrivalFilterDate =
+                 compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
+      if (flight.oneWay) {
+ 
+        return  arrivalFilterDate;
       } else {
        
         return departureFilterDate;
