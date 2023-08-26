@@ -72,10 +72,11 @@ function FlightSearchForm() {
 
       return departureMatch && arrivalMatch;
     });
-
+   
     setSearchResult(filteredFlights);
     setShowFlight(false);
-  }, [searchData, flight, setShowFlight, setSearchResult]);
+    //  setShowDate(false);
+  }, [searchData, flight, setShowFlight, setSearchResult, setShowDate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -106,6 +107,7 @@ function FlightSearchForm() {
       oneWay: e.target.checked,
       arrivalDate: e.target.checked ? "" : prevData.arrivalDate,
     }));
+    setShowDate(!showDate)
   };
 
   const handleAirportClick = (airportCode) => {
@@ -140,6 +142,7 @@ function FlightSearchForm() {
         departureDate: searchData.departureDate === "",
         arrivalDate: searchData.arrivalDate === "",
       });
+     
     } else {
       setShowError({
         departureAirport: false,
@@ -156,10 +159,12 @@ function FlightSearchForm() {
       if (searchData.oneWay === false) {
         const searchArrivalDate = new Date(searchData.arrivalDate);
         const searchResultArrivalDate = new Date(flight.arrivalTime);
+       
         const arrivalFilterDate =
           compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
         return departureFilterDate && arrivalFilterDate;
       } else {
+       
         return departureFilterDate;
       }
     });
@@ -394,8 +399,9 @@ function FlightSearchForm() {
         flightStatus={flightStatus}
         showFlight={showFlight}
         searchResult={searchResult}
-        flight={flight.slice().sort((a, b) => a.price - b.price)}
+        flight={flight.slice().sort((a,b)=>b.price-a.price)}
         setSearchResult={setSearchResult}
+        showDate={showDate}
       />
     </div>
   );

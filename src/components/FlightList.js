@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { MdOutlineAirlines } from "react-icons/md";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import { BsExclamationCircleFill } from "react-icons/bs";
-function FlightList({item}) {
+function FlightList({item, showDate}) {
 
 // const { error } = useSelector((state) => state.flights);
 const fortmatDate = (time) => {
@@ -13,6 +13,7 @@ const fortmatDate = (time) => {
 
   return newDateValue;
 };
+
   return (
     <>
       {item.length > 0 ? (
@@ -31,6 +32,23 @@ const fortmatDate = (time) => {
               ({flight.arrivalAirportCode}) - {flight.arrivalCity}:
               {flight.arrivalHour}
             </td>
+            <td className="px-6 py-4">{fortmatDate(flight.departureTime)}</td>
+            {!showDate && (
+              <>
+                <td className="px-6 py-4">
+                  {" "}
+                  ( {flight.arrivalAirportCode}) -{flight.returnDepartureHour}
+                </td>
+                <td className="px-6 py-4">
+                  {" "}
+                  ({flight.departureAirportCode}) -{flight.returnArrivalHour}
+                </td>
+                
+                  <td className="px-6 py-4">{fortmatDate(flight.arrivalTime)}</td>
+              </>
+            )}
+
+          
             <td className="px-6 py-4">
               {" "}
               {new Intl.NumberFormat("tr-TR", {
@@ -38,8 +56,6 @@ const fortmatDate = (time) => {
                 currency: "TRY",
               }).format(flight.price)}
             </td>
-            <td className="px-6 py-4">{fortmatDate(flight.departureTime)}</td>
-            <td className="px-6 py-4">{fortmatDate(flight.arrivalTime)}</td>
           </tr>
         ))
       ) : (

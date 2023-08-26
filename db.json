@@ -9,8 +9,8 @@
       "arrivalAirport": "Ankara Esenboğa Havalimanı",
       "departureCity": "Istanbul",
       "arrivalCity": "Ankara",
-      "departureTime": "2023-08-25",
-      "arrivalTime": "2023-08-25",
+      "departureTime": "2023-08-26",
+      "arrivalTime": "2023-08-26",
       "departureHour": "23:00",
       "arrivalHour": "01:15",
       "price": 150
@@ -40,8 +40,8 @@
       "arrivalAirport": "Istanbul Havalimanı",
       "departureCity": "Ankara",
       "arrivalCity": "Istanbul",
-      "departureTime": "2023-08-25",
-      "arrivalTime": "2023-08-25",
+      "departureTime": "2023-08-26",
+      "arrivalTime": "2023-08-26",
       "departureHour": "00:00",
       "arrivalHour": "02:30",
       "price": 500
@@ -55,8 +55,8 @@
       "arrivalAirport": "Antalya Havalimanı",
       "departureCity": "Istanbul",
       "arrivalCity": "Antalya",
-      "departureTime": "2023-08-25",
-      "arrivalTime": "2023-08-25",
+      "departureTime": "2023-08-26",
+      "arrivalTime": "2023-08-26",
       "departureHour": "09:00",
       "arrivalHour": "12:00",
       "price": 600
@@ -70,8 +70,8 @@
       "arrivalAirport": "Ankara Esenboğa Havalimanı",
       "departureCity": "Sivas",
       "arrivalCity": "Ankara",
-      "departureTime": "2023-08-25",
-      "arrivalTime": "2023-08-26",
+      "departureTime": "2023-08-27",
+      "arrivalTime": "2023-08-27",
       "departureHour": "23:00",
       "arrivalHour": "00:15",
       "price": 70
@@ -117,7 +117,7 @@
       "arrivalAirport": "Erzurum Havalimanı",
       "departureCity": "Çannakale",
       "arrivalCity": "Erzurum",
-      "departureTime": "2023-08-25",
+      "departureTime": "2023-08-26",
       "arrivalTime": "2023-08-26",
       "departureHour": "21:30",
       "arrivalHour": "01:30",
@@ -154,8 +154,7 @@
       "arrivalHour": "00:30",
       "price": 800
     },
-    
-    
+
     {
       "id": 11,
       "airline": "FlightCo",
@@ -170,6 +169,36 @@
       "departureHour": "10:00",
       "arrivalHour": "13:00",
       "price": 900
+    },
+    {
+      "id": 12,
+      "airline": "AnadoluJet",
+      "departureAirportCode": "IST",
+      "arrivalAirportCode": "ESB",
+      "departureAirport": "Istanbul Havalimanı",
+      "arrivalAirport": "Ankara Esenboğa Havalimanı",
+      "departureCity": "Istanbul",
+      "arrivalCity": "Ankara",
+      "departureTime": "2023-08-26",
+      "arrivalTime": "2023-08-26",
+      "departureHour": "22:00",
+      "arrivalHour": "23:15",
+      "price": 150
+    },
+        {
+      "id": 13,
+      "airline": "AnadoluJet",
+      "departureAirportCode": "IST",
+      "arrivalAirportCode": "ESB",
+      "departureAirport": "Istanbul Havalimanı",
+      "arrivalAirport": "Ankara Esenboğa Havalimanı",
+      "departureCity": "Istanbul",
+      "arrivalCity": "Ankara",
+      "departureTime": "2023-08-26",
+      "arrivalTime": "2023-08-26",
+      "departureHour": "18:00",
+      "arrivalHour": "19:15",
+      "price": 300
     }
   ]
 }
