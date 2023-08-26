@@ -148,6 +148,12 @@ function FlightSearchForm() {
         departureDate: searchData.departureDate === "",
         arrivalDate: searchData.arrivalDate === "",
       });
+      
+   if(!searchData.oneWay ){
+
+   return showError
+   
+   }
     } else {
       setShowError({
         departureAirport: false,
@@ -167,10 +173,10 @@ function FlightSearchForm() {
 
       const arrivalFilterDate =
         compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
-      if (flight.oneWay) {
-        return arrivalFilterDate;
+      if (!flight.oneWay) {
+        return  departureFilterDate;
       } else {
-        return departureFilterDate;
+        return arrivalFilterDate;
       }
     });
     setSearchResult(dateFilter);

@@ -1,6 +1,4 @@
 import React from 'react'
-
-
 import { BsExclamationCircleFill } from "react-icons/bs";
 function FlightList({item, showDate}) {
 
