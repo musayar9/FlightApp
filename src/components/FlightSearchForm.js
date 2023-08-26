@@ -171,7 +171,7 @@ function FlightSearchForm() {
       const arrivalFilterDate =
         compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
       if (!searchData.oneWay) {
-        return  arrivalFilterDate ;
+        return  arrivalFilterDate && departureFilterDate ;
       } else {
         return departureFilterDate ;
       }
