@@ -175,7 +175,7 @@ function FlightSearchList({
                   )}
                 </th>
                 <th scope="col" className="px-4 py-3 space-x-2">
-                  <span>Prcie </span>
+                  <span>Price </span>
                   <button
                     type="button"
                     onClick={showFlight ? handleSortPrice : handeClickAllFilter}
