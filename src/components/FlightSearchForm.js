@@ -249,7 +249,7 @@ function FlightSearchForm() {
               <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
                 <BsExclamationCircleFill className="text-gray-50 font-bold " />
                 <p className="text-gray-50 text-sm">
-                  The departure airport cannot be left blank.
+                  The departure airport can't be left blank.
                 </p>
               </div>
             )}
@@ -310,7 +310,7 @@ function FlightSearchForm() {
               <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
                 <BsExclamationCircleFill className="text-gray-50 font-bold " />
                 <p className="text-gray-50 text-sm">
-                  The arrival airport cannot be left blank.
+                  The arrival airport can't be left blank.
                 </p>
               </div>
             )}
@@ -338,7 +338,7 @@ function FlightSearchForm() {
               <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
                 <BsExclamationCircleFill className="text-gray-50 font-bold " />
                 <p className="text-gray-50 text-sm">
-                  Departure date cannot be left blank
+                  Departure date can't be left blank
                 </p>
               </div>
             )}
@@ -367,7 +367,7 @@ function FlightSearchForm() {
                   <div className="flex items-center justify-start space-x-2 w-full bg-red-500 p-1 m-1 rounded-sm ">
                     <BsExclamationCircleFill className="text-gray-50 font-bold " />
                     <p className="text-gray-50 text-sm">
-                      Arrival date cannot be left blank
+                      Arrival date can't be left blank
                     </p>
                   </div>
                 )}
