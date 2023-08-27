@@ -17,6 +17,8 @@ function FlightSearchList({
   showFlight,
   setSearchResult,
   showDate,
+  setShowDate,
+  setShowFlight
 }) {
   const [open, setOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -25,7 +27,7 @@ function FlightSearchList({
 
   const [wayLength, setWayLength] = useState(false);
 
-//Fiyata göre filtreleme
+  //Fiyata göre filtreleme
   const handleSortPrice = () => {
     setFilterOpen(!filterOpen);
 
@@ -99,7 +101,7 @@ function FlightSearchList({
               <tr>
                 <th scope="col" className="px-4 py-3">
                   <span className="flex">
-                    <MdOutlineAirlines size={24} className="p-1"/> Airline
+                    <MdOutlineAirlines size={24} className="p-1" /> Airline
                   </span>
                 </th>
                 <th scope="col" className="px-4 py-3 space-x-1 flex">
@@ -177,7 +179,11 @@ function FlightSearchList({
                     type="button"
                     onClick={showFlight ? handleSortPrice : handeClickAllFilter}
                   >
-                    {open || filterOpen ? <FaArrowCircleUp/> :<FaArrowCircleDown/>}
+                    {open || filterOpen ? (
+                      <FaArrowCircleUp />
+                    ) : (
+                      <FaArrowCircleDown />
+                    )}
                   </button>
                 </th>
               </tr>
@@ -185,11 +191,16 @@ function FlightSearchList({
 
             <tbody>
               {showFlight ? (
-                <FlightList item={searchResult} showDate={showDate} />
+                <FlightList
+                  item={searchResult}
+                  showDate={showDate}
+                  setShowFlight={setShowFlight}
+                />
               ) : (
                 <FlightList
                   item={open ? flight : allFlightSort}
                   showDate={showDate}
+                  setShowFlight={setShowFlight}
                 />
               )}
             </tbody>

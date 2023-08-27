@@ -176,7 +176,9 @@ function FlightSearchForm() {
     });
     setSearchResult(dateFilter);
     setShowFlight(true);
+   
   };
+  
 
   if (flightStatus === "failed") {
     return (
@@ -410,6 +412,7 @@ function FlightSearchForm() {
         flight={flight.slice().sort((a, b) => b.price - a.price)}
         setSearchResult={setSearchResult}
         showDate={showDate}
+        setShowFlight={setShowFlight}
       />
     </div>
   );

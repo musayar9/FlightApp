@@ -1,6 +1,6 @@
 import React from "react";
 import { BsExclamationCircleFill } from "react-icons/bs";
-function FlightList({ item, showDate }) {
+function FlightList({ item, showDate, setShowDate, setShowFlight }) {
   //tarih formatlama alanı
   const fortmatDate = (time) => {
     const newDate = time.split("-");
@@ -62,12 +62,21 @@ function FlightList({ item, showDate }) {
           </tr>
         ))
       ) : (
-        <tr className="flex items-center space-x-2  w-full p-2 m-4 bg-red-500 text-gray-50  rounded-lg">
-          <td>
-            <BsExclamationCircleFill />
+      <>
+        <tr className="flex items-center justify-center space-x-2  w-96 p-2 m-4 h-24 rounded-lg">
+          <td className="  text-red-500">
+            <BsExclamationCircleFill  size={26}/>
           </td>
-          <td>Flight was demented</td>
+          <td className="text-red-500 text-xl font-bold">Flight was demented</td>
+          <td>
+            <button className="bg-blue-600 hover:bg-gray-50  text-gray-50 hover:text-blue-500 border hover:border-blue-500 px-2 py-2 rounded-lg duration-500" onClick={() => (setShowFlight(false))}>
+              Return Flight List
+            </button>
+          </td>
         </tr>
+        
+        <tr></tr>
+        </>
       )}
     </>
   );
