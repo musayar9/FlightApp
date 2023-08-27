@@ -62,20 +62,25 @@ function FlightList({ item, showDate, setShowDate, setShowFlight }) {
           </tr>
         ))
       ) : (
-      <>
-        <tr className="flex items-center justify-center space-x-2  w-96 p-2 m-4 h-24 rounded-lg">
-          <td className="  text-red-500">
-            <BsExclamationCircleFill  size={26}/>
-          </td>
-          <td className="text-red-500 text-xl font-bold">Flight was demented</td>
-          <td>
-            <button className="bg-blue-600 hover:bg-gray-50  text-gray-50 hover:text-blue-500 border hover:border-blue-500 px-2 py-2 rounded-lg duration-500" onClick={() => (setShowFlight(false))}>
-              Return Flight List
-            </button>
-          </td>
-        </tr>
-        
-        <tr></tr>
+        <>
+          <tr className="flex items-center justify-center      rounded-lg">
+            <td className="px-2 py-4  text-red-500">
+              <BsExclamationCircleFill size={26} />
+            </td>
+            <td className="px-2 py-4 text-red-500 text-lg font-bold">
+              Flight was demented
+            </td>
+            <td className="px-2 py-4">
+              <button
+                className="bg-blue-600 hover:bg-gray-50  text-gray-50 hover:text-blue-500 border hover:border-blue-500 px-2 py-1 rounded-lg duration-500"
+                onClick={() => setShowFlight(false)}
+              >
+                Return Flight List
+              </button>
+            </td>
+          </tr>
+
+          <tr></tr>
         </>
       )}
     </>

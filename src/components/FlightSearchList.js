@@ -98,6 +98,7 @@ function FlightSearchList({
         {flightStatus === "succeded" && (
           <table className="w-full text-sm text-left text-gray-500  ">
             <thead className="text-sm text-gray-200 capitalize  bg-gradient-to-br from-green-400 to-blue-600">
+            
               <tr>
                 <th scope="col" className="px-4 py-3">
                   <span className="flex">
