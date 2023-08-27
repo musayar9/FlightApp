@@ -68,7 +68,7 @@ function FlightList({ item, showDate, setShowDate, setShowFlight }) {
               <BsExclamationCircleFill size={26} />
             </td>
             <td className="px-2 py-4 text-red-500 text-lg font-bold">
-              Flight was demented
+              The flight was found
             </td>
             <td className="px-2 py-4">
               <button
