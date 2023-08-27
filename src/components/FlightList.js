@@ -1,24 +1,23 @@
-import React from 'react'
+import React from "react";
 import { BsExclamationCircleFill } from "react-icons/bs";
-function FlightList({item, showDate}) {
+function FlightList({ item, showDate }) {
+  //tarih formatlama alanı
+  const fortmatDate = (time) => {
+    const newDate = time.split("-");
 
-//tarih formatlama alanı
-const fortmatDate = (time) => {
-  const newDate = time.split("-");
+    const newDateValue = newDate.reverse().join("/");
 
-  const newDateValue = newDate.reverse().join("/");
+    return newDateValue;
+  };
 
-  return newDateValue;
-};
+  // saat formatlama
+  function formatTimeManually(timeStr) {
+    const [hours, minutes] = timeStr.split(":");
+    const hourUnit = parseInt(hours) > 0 ? "s." : "saat";
+    const minuteUnit = parseInt(minutes) > 0 ? "dakika" : "dk";
 
-// saat formatlama
-function formatTimeManually(timeStr) {
-  const [hours, minutes] = timeStr.split(":");
-  const hourUnit = parseInt(hours) >0 ? "s." :"saat"
-  const minuteUnit = parseInt(minutes) >0 ? "dakika" : "dk";
-
-  return `${hours}${hourUnit} : ${minutes} ${minuteUnit}`;
-}
+    return `${hours}${hourUnit} : ${minutes} ${minuteUnit}`;
+  }
   return (
     <>
       {item.length > 0 ? (
@@ -28,12 +27,10 @@ function formatTimeManually(timeStr) {
               {flight.airline}
             </td>
             <td className="px-6 py-4">
-              {" "}
-              ( {flight.departureAirportCode}) - {flight.departureCity} :{" "}
+              ({flight.departureAirportCode}) - {flight.departureCity} :
               {flight.departureHour}
             </td>
             <td className="px-6 py-4">
-              {" "}
               ({flight.arrivalAirportCode}) - {flight.arrivalCity}:
               {flight.arrivalHour}
             </td>
@@ -41,27 +38,22 @@ function formatTimeManually(timeStr) {
             {!showDate && (
               <>
                 <td className="px-6 py-4">
-                  {" "}
                   ({flight.arrivalAirportCode}) -{flight.returnDepartureHour}
                 </td>
                 <td className="px-6 py-4">
-                  {" "}
                   ({flight.departureAirportCode}) -{flight.returnArrivalHour}
                 </td>
-                
-                  <td className="px-6 py-4">{fortmatDate(flight.arrivalTime)}</td>
+
+                <td className="px-6 py-4">{fortmatDate(flight.arrivalTime)}</td>
               </>
             )}
             {
-          
-            <td className='px-6 py-4' >
-            {formatTimeManually(flight.wayLength)}
-            
-            </td>
+              <td className="px-6 py-4">
+                {formatTimeManually(flight.wayLength)}
+              </td>
             }
-          
+
             <td className="px-6 py-4">
-              {" "}
               {new Intl.NumberFormat("tr-TR", {
                 style: "currency",
                 currency: "TRY",
@@ -81,4 +73,4 @@ function formatTimeManually(timeStr) {
   );
 }
 
-export default FlightList
+export default FlightList;

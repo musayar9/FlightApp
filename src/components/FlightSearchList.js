@@ -131,7 +131,7 @@ function FlightSearchList({
                     <th scope="col" className="px-4 py-3 space-x-1 flex">
                       <span className="flex">
                         <FaPlaneDeparture size={24} className="pr-2" />
-                        Return Dep.{" "}
+                        Return Dep.
                       </span>
 
                       {showFlight && (
@@ -150,7 +150,7 @@ function FlightSearchList({
                     <th scope="col" className="px-4 py-3">
                       <span className="flex">
                         <FaPlaneArrival size={26} className="pr-2" /> Return
-                        Arr.{" "}
+                        Arr.
                       </span>
                     </th>
 

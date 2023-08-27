@@ -3,9 +3,7 @@ import { compareAsc, isToday, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAirline, fetchFlights } from "../redux/flightSlice";
 import FlightSearchList from "./FlightSearchList";
-
 import { BsExclamationCircleFill } from "react-icons/bs";
-import "./flight.css";
 import Error from "./Error";
 
 function FlightSearchForm() {
@@ -131,7 +129,7 @@ function FlightSearchForm() {
     setIsArrivalFilter(false);
     setShowFlight(false);
   };
-  
+
   /*kalkış havaalanı, dönüş havaalanına, kalkış tarihi, ve dönüş tarihine göre girilen verilerin kontrol alanı
   girilen veriler üzerinden istenilen  karşılanıyorsa filter işlemi gerçekleşecek eğer karşılanmıyosa hata mesajları gösterilecek
 */
@@ -148,9 +146,9 @@ function FlightSearchForm() {
         departureDate: searchData.departureDate === "",
         arrivalDate: searchData.arrivalDate === "",
       });
-   if(!searchData.oneWay ){
-   return showError
-   }
+      if (!searchData.oneWay) {
+        return showError;
+      }
     } else {
       setShowError({
         departureAirport: false,
@@ -171,19 +169,22 @@ function FlightSearchForm() {
       const arrivalFilterDate =
         compareAsc(searchResultArrivalDate, searchArrivalDate) === 0;
       if (!searchData.oneWay) {
-        return  arrivalFilterDate && departureFilterDate ;
+        return arrivalFilterDate && departureFilterDate;
       } else {
-        return departureFilterDate ;
+        return departureFilterDate;
       }
     });
     setSearchResult(dateFilter);
     setShowFlight(true);
   };
 
-
-if(flightStatus === "failed"){
-return (<div><Error message={error}/> </div>)
-}
+  if (flightStatus === "failed") {
+    return (
+      <div>
+        <Error message={error} />{" "}
+      </div>
+    );
+  }
   return (
     <div className=" flex flex-col items-center content-center mt-10 ">
       <div className="shadow shadow-slate-400 rounded-lg w-[400px] md:w-[600px] lg:w-[800px] p-10">
@@ -202,7 +203,7 @@ return (<div><Error message={error}/> </div>)
             {searchData.departureAirport && (
               <>
                 {isDepartureFilter && (
-                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded-lg p-1 bg-gray-50  absolute">
+                  <div className="w-full border  border-gray-300  font-semibold h-fit rounded-lg bg-gray-50  absolute">
                     {airline
                       .filter((item) => {
                         const filterCode =
@@ -225,7 +226,7 @@ return (<div><Error message={error}/> </div>)
                       })
                       .map((filteredItem) => (
                         <p
-                          className="font-semibold  hover:bg-gray-300 hover:text-gray-50 cursor-pointer w-full p-1"
+                          className="font-semibold  hover:bg-gray-300 hover:text-gray-50 cursor-pointer w-full p-0.5"
                           key={filteredItem.id}
                           onClick={() => handleAirportClick(filteredItem.code)}
                         >
@@ -238,7 +239,7 @@ return (<div><Error message={error}/> </div>)
             )}
             <label
               htmlFor="departureAirport"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Departure Airport
             </label>
@@ -256,7 +257,7 @@ return (<div><Error message={error}/> </div>)
               type="text"
               name="arrivalAirport"
               id="arrivalAirport"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               value={searchData.arrivalAirport}
               onChange={handleChange}
@@ -265,7 +266,7 @@ return (<div><Error message={error}/> </div>)
             {searchData.arrivalAirport && (
               <>
                 {isArrivalFilter && (
-                  <div className="w-full border search border-gray-300  font-semibold h-fit rounded-lg p-1  bg-gray-50  absolute">
+                  <div className="w-full border  border-gray-300  font-semibold h-fit rounded-lg  bg-gray-50  absolute">
                     {airline
                       .filter((item) => {
                         const arrival =
@@ -284,7 +285,7 @@ return (<div><Error message={error}/> </div>)
                       })
                       .map((filteredItem) => (
                         <p
-                          className="font-semibold  hover:bg-gray-300 cursor-pointer w-full p-1"
+                          className="font-semibold  hover:bg-gray-300  hover:text-gray-50  cursor-pointer w-full p-0.5"
                           key={filteredItem.id}
                           onClick={() =>
                             handleArrivalAirport(filteredItem.code)
@@ -299,7 +300,7 @@ return (<div><Error message={error}/> </div>)
             )}
             <label
               htmlFor="arrivalAirport"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               ArrivalAirport
             </label>
@@ -326,7 +327,7 @@ return (<div><Error message={error}/> </div>)
             />
             <label
               htmlFor="depreatureDate"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Deprature Date
             </label>
@@ -354,7 +355,7 @@ return (<div><Error message={error}/> </div>)
             />
             <label
               htmlFor="arrivalDate"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Return Date
             </label>
@@ -384,7 +385,7 @@ return (<div><Error message={error}/> </div>)
           />
           <label
             htmlFor="oneWay"
-            className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            className="w-full py-4 ml-2 text-sm font-medium text-gray-900"
           >
             One Way Flight
           </label>
